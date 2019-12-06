@@ -28,7 +28,7 @@ public class AssignmentNode extends AbstractTreeNode {
 	}
 	
 	@Override
-	public Object execute(Context context) {
+	public Object execute(Context context) throws Exception {
 		if(context.getVars().containsKey(varId)) {
 			double value = context.getVars().get(varId);
 			switch(operation){

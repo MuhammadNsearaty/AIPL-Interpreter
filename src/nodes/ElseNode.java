@@ -6,8 +6,9 @@ public class ElseNode extends AbstractTreeNode {
 		this.name = "Else Node";
 	}
 	@Override
-	public Object execute(Context context) {
-		return getChildren().get(0).execute(context);
+	public Object execute(Context context) throws Exception {
+		getChildren().get(0).execute(context);
+		return null;
 	}
 
 	@Override

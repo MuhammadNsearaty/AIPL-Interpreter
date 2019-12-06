@@ -16,7 +16,7 @@ public class ExpressionNode extends AbstractTreeNode {
 	}
 
 	@Override
-	public Object execute(Context context) {
+	public Object execute(Context context) throws Exception {
 		double d1 = (Double)this.getChildren().get(0).execute(context);
 		double d2 = (Double)this.getChildren().get(1).execute(context);
 		

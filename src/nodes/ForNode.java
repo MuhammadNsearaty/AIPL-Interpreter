@@ -22,7 +22,7 @@ public class ForNode extends AbstractTreeNode {
 	}
 
 	@Override
-	public Object execute(Context context) {
+	public Object execute(Context context) throws Exception {
 		double start = (Double)this.getChildren().get(0).execute(context);
 		double end =(Double)this.getChildren().get(0).execute(context);
 		double step = 1;

@@ -9,10 +9,9 @@ public class ReturnNode extends AbstractTreeNode {
 
 	
 	@Override
-	public Object execute(Context context) {
-		return getChildren().get(0).execute(context);
+	public Object execute(Context context) throws Exception {
+		throw new ReturnException((double) getChildren().get(0).execute(context));
 	}
-
 
 	@Override
 	public Object convert(Context context) {

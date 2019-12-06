@@ -6,11 +6,12 @@ public class IfNode extends AbstractTreeNode {
 		this.name = "If Node";
 	}
 	@Override
-	public Object execute(Context context) {
-		if ((Boolean)this.getChildren().get(0).execute(context))
-			return this.getChildren().get(1).execute(context);
-		else if (this.getChildren().size() > 2)
-				return this.getChildren().get(2).execute(context);
+	public Object execute(Context context) throws Exception {
+		if ((Boolean)getChildren().get(0).execute(context))
+			getChildren().get(1).execute(context);
+		else if (getChildren().size() > 2)
+			getChildren().get(2).execute(context);
+		
 		return null;
 	}
 

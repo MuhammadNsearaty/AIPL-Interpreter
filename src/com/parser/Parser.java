@@ -6,7 +6,7 @@ import nodes.*;
 
 public class Parser implements ParserConstants {
 
-  public static void main(String args []) throws ParseException, IOException{
+  public static void main(String args []) throws Exception{
 
     FileInputStream stream = new FileInputStream("newText.txt");
         Parser parser = new Parser(stream);

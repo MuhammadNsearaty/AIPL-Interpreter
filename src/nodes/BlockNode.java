@@ -7,12 +7,9 @@ public class BlockNode extends AbstractTreeNode {
 	}
 
 	@Override
-	public Object execute(Context context) {
-		for (AbstractTreeNode n : this.getChildren()){
-			if(n instanceof ReturnNode)
-				return n.execute(context);
-			n.execute(context);
-		}
+	public Object execute(Context context) throws Exception {
+		for (AbstractTreeNode n : this.getChildren())
+			n.execute(context);	
 		return null;
 	}
 

@@ -11,19 +11,14 @@ public class FunctionCallNode extends ExpressionNode {
 	}
 
 	@Override
-	public Object execute(Context context) {
-		if(!Context.functionMap.containsKey(getOperationName())) {
-			System.out.println(getOperationName() +" dose not exsit assuming the value is 0");
-			return 0.;
-		}
+	public Object execute(Context context) throws Exception {
+		if(!Context.functionMap.containsKey(getOperationName()))
+			throw new RunTimeException(getOperationName() + "is not defined");
 		
 		ArrayList<String> parIds = Context.functionMap.get(getOperationName()).getParIds();
 		
-		if(parIds.size() != getChildren().size()) {
-			System.out.println(this.getOperationName() +" takes " + parIds.size() + " parameters found" + getChildren().size());
-			System.out.println("assuming the value is 0");
-			return 0.;
-		}
+		if(parIds.size() != getChildren().size())
+			throw new RunTimeException(this.getOperationName() +" takes " + parIds.size() + " parameters found " + getChildren().size());
 		
 		
 		int i = 0;
@@ -37,8 +32,12 @@ public class FunctionCallNode extends ExpressionNode {
 			}
 			context.getVars().put(parIds.get(i++), value);
 		}
-		
-		double ret = (double) Context.functionMap.get(this.getOperationName()).execute(context);
+		Double ret = null;
+		try {
+			Context.functionMap.get(this.getOperationName()).execute(context);	
+		} catch (ReturnException e) {
+			ret = e.getValue();
+		}
 		
 		for(String id : parIds)
 			context.getVars().remove(id);

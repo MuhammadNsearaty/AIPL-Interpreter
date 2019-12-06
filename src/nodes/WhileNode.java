@@ -7,8 +7,8 @@ public class WhileNode extends AbstractTreeNode {
 	}
 
 	@Override
-	public Object execute(Context context) {
-		while((Boolean)this.getChildren().get(0).execute(context))
+	public Object execute(Context context) throws Exception {
+		while((Boolean)getChildren().get(0).execute(context))
 		{
 			this.getChildren().get(1).execute(context);
 		}

@@ -19,7 +19,7 @@ public abstract class AbstractTreeNode {
 	public void addChild(AbstractTreeNode child) {
 		this.children.add(child);
 	}
-	public abstract Object execute(Context context);
+	public abstract Object execute(Context context) throws Exception;
 	public abstract Object convert(Context context);
 	public void print(String prefix) {
 		System.out.println(prefix + this.getName());

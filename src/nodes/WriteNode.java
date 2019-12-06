@@ -6,7 +6,7 @@ public class WriteNode extends AbstractTreeNode {
 		this.name = "Write Node";
 	}
 	@Override
-	public Object execute(Context context) {
+	public Object execute(Context context) throws Exception {
 		System.out.println(this.getChildren().get(0).execute(context));
 		return null;
 	}

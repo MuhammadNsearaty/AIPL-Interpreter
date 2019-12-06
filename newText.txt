@@ -1,0 +1,17 @@
+func(x,y)->gcd:
+	?(x < y)
+		return gcd(x, y - x);
+	??
+		?(x > y)
+			return gcd(x - y, y);
+		??
+			return x;
+		!
+	!
+!
+func(x,y)->sum:
+return x + y;
+!
+w := gcd(10 ,6, 13);
+->w;
+	
