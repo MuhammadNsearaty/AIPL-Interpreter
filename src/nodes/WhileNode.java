@@ -8,9 +8,9 @@ public class WhileNode extends AbstractTreeNode {
 
 	@Override
 	public Object execute(Context context) throws Exception {
-		while((Boolean)getChildren().get(0).execute(context))
+		while((Boolean)children.get(0).execute(context))
 		{
-			this.getChildren().get(1).execute(context);
+			children.get(1).execute(context);
 		}
 		return null;
 	}

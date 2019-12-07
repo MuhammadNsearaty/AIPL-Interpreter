@@ -3,30 +3,30 @@ package nodes;
 public class ConditionNode extends AbstractTreeNode {
 	
 	public ConditionNode() {
-		this.name = "Condition Node";
+		name = "Condition Node";
 	}
-	private String operationName;
+	private String operation;
 
-	public String getOperationName() {
-		return operationName;
+	public String getOperation() {
+		return operation;
 	}
 
-	public void setOperationName(String operationName) {
-		this.operationName = operationName;
+	public void setOperation(String operation) {
+		this.operation = operation;
 	}
 
 	@Override
 	public void print(String prefix) {
-		System.out.println(prefix + this.name + " : operation name " + this.operationName);
-		this.printChildren(prefix);
+		System.out.println(prefix + name + " : operation " + operation);
+		printChildren(prefix);
 	}
 
 	@Override
 	public Object execute(Context context) throws Exception {
 		
-		double d1 = (Double)this.getChildren().get(0).execute(context);
-		double d2 = (Double)this.getChildren().get(1).execute(context);
-		switch(this.operationName)
+		double d1 = (Double)children.get(0).execute(context);
+		double d2 = (Double)children.get(1).execute(context);
+		switch(this.operation)
 		{
 		case ">":
 			return d1>d2;

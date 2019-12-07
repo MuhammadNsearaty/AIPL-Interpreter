@@ -4,28 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FunctionCallNode extends ExpressionNode {
-	
 	public FunctionCallNode() {
 		super();
-		this.name = "Function Call Node";
+		name = "Function Call Node";
 	}
 
 	@Override
 	public Object execute(Context context) throws Exception {
-		if(!Context.functionMap.containsKey(getOperationName()))
-			throw new RunTimeException(getOperationName() + "is not defined");
+		if(!Context.functionMap.containsKey(operation))
+			throw new RunTimeException(operation + "is not defined");
 		
-		ArrayList<String> parIds = Context.functionMap.get(getOperationName()).getParIds();
+		ArrayList<String> parIds = Context.functionMap.get(operation).getParIds();
 		
-		if(parIds.size() != getChildren().size())
-			throw new RunTimeException(this.getOperationName() +" takes " + parIds.size() + " parameters found " + getChildren().size());
+		if(parIds.size() != children.size())
+			throw new RunTimeException(operation +" takes " + parIds.size() + " parameters found " + children.size());
 		
 		
 		int i = 0;
 		HashMap<String, Double> globalVars = new HashMap<>();
 
 		//copying global context		
-		for(AbstractTreeNode n : getChildren()) {
+		for(AbstractTreeNode n : children) {
 			double value = (double) n.execute(context);
 			if(context.getVars().containsKey(parIds.get(i))) {
 				globalVars.put(parIds.get(i), context.getVars().get(parIds.get(i)));
@@ -34,13 +33,10 @@ public class FunctionCallNode extends ExpressionNode {
 		}
 		Double ret = null;
 		try {
-			Context.functionMap.get(this.getOperationName()).execute(context);	
+			Context.functionMap.get(operation).execute(context);	
 		} catch (ReturnException e) {
 			ret = e.getValue();
 		}
-		
-		for(String id : parIds)
-			context.getVars().remove(id);
 		
 		for(String id : globalVars.keySet())
 			context.getVars().put(id, globalVars.get(id));
@@ -50,8 +46,8 @@ public class FunctionCallNode extends ExpressionNode {
 
 	@Override
 	public void print(String prefix) {
-		System.out.println(prefix + this.name + " " + this.operationName);
-		this.printChildren(prefix);
+		System.out.println(prefix + name + " " + operation);
+		printChildren(prefix);
 	}
 
 }

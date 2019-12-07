@@ -3,24 +3,24 @@ package nodes;
 public class ExpressionNode extends AbstractTreeNode {
 
 	public ExpressionNode() {
-		this.name = "Expression Node";
+		name = "Expression Node";
 	}
-	protected String operationName;
+	protected String operation;
 	
-	public String getOperationName() {
-		return operationName;
+	public String getOperation() {
+		return operation;
 	}
 
-	public void setOperationName(String operationName) {
-			this.operationName = operationName;
+	public void setOperation(String operation) {
+			this.operation = operation;
 	}
 
 	@Override
 	public Object execute(Context context) throws Exception {
-		double d1 = (Double)this.getChildren().get(0).execute(context);
-		double d2 = (Double)this.getChildren().get(1).execute(context);
+		double d1 = (Double)children.get(0).execute(context);
+		double d2 = (Double)children.get(1).execute(context);
 		
-		switch(this.operationName)
+		switch(this.operation)
 		{
 		case"+":
 			return d1+d2;
@@ -30,6 +30,8 @@ public class ExpressionNode extends AbstractTreeNode {
 			return d1*d2;
 		case "/":
 			return d1/d2;
+		case "%":
+			return d1 % d2;
 		
 		}
 	
@@ -39,8 +41,8 @@ public class ExpressionNode extends AbstractTreeNode {
 	@Override
 	public void print(String prefix) {
 		// TODO Auto-generated method stub
-		System.out.println(prefix + this.name + " operation " + this.operationName);
-		this.printChildren(prefix);
+		System.out.println(prefix + name + " operation " + operation);
+		printChildren(prefix);
 		
 	}
 

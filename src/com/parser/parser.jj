@@ -1,4 +1,5 @@
-options{
+options
+{
   static = true;
 }
 
@@ -7,46 +8,55 @@ package com.parser;
 import java.io.FileInputStream;
 import nodes.*;
 
-public class Parser{
-  
-  public static void main(String args []) throws Exception{
-
+public class Parser
+{
+  public static void main(String args []) throws Exception
+  {
     FileInputStream stream = new FileInputStream("newText.txt");
-	Parser parser = new Parser(stream);
-	AbstractTreeNode node = start();
-
-	//for(String s : Context.functionMap.keySet())
-		//Context.functionMap.get(s).print("");
-	
-	//node.print("");
-	node.execute(new Context());
+    new Parser(stream);
+    AbstractTreeNode node = start();
+    node.execute(new Context());
   }
 }
 
 PARSER_END(Parser)
 
-SKIP :{
+SKIP :
+{
   " "
 | "\r"
 | "\t"
 | "\n"
 }
 
-TOKEN : /* OPERATORS */{
-  < PLUS : "+" | "-">
-| < MULTIPLY : "*" | "/">
-| < MOD : "%">
+TOKEN : /* OPERATORS */
+{
+  < PLUS :
+    "+"
+  | "-" >
+| < MULTIPLY :
+    "*"
+  | "/" >
+| < MOD : "%" >
 | < POWER : "^" >
 | < EQ : "=" >
 | < LT : "<" >
 | < GT : ">" >
-| < LET : < LT >< EQ >>
-| < GET : < GT >< EQ >>
-| < NEQ : < LT >< GT >>
-| < assignment : ":="|"+="|"-="|"*="|"/=" >
+| < LET : < LT > < EQ > >
+| < GET : < GT > < EQ > >
+| < NEQ : < LT > < GT > >
+| < OR : "or">
+| < AND : "and" >
+| < assignment :
+    ":="
+  | "+="
+  | "-="
+  | "*="
+  | "/=" >
 }
 
-TOKEN :{
+TOKEN :
+{
   < #DIGIT : [ "0"-"9" ] >
 | < NUM : (< DIGIT >)+ >
 | < END : "!" >
@@ -54,63 +64,141 @@ TOKEN :{
 | < WLOOP : "@" >
 | < LP : "(" >
 | < RP : ")" >
-| < FUNCTION: "func">
-| < Return: "return">
-| < #FLOATINGPOINT : "." < NUM >>
-| < DOUBLE : < NUM >  (< FLOATINGPOINT >)? (("E"|"e")(("+"|"-")?) < NUM >(< FLOATINGPOINT >)?)? >
-| < #LETTER : ["a" - "z"] | ["A" - "Z"]>
-| < VAR : ("_" | < LETTER >)(< DIGIT >|< LETTER >|"_")* >
+| < FUNCTION : "func" >
+| < Return : "return" >
+| < #FLOATINGPOINT : "." < NUM > >
+| < DOUBLE :
+    < NUM > (< FLOATINGPOINT >)?
+    (
+      (
+        "E"
+      | "e"
+      )
+      (
+        (
+          "+"
+        | "-"
+        )?
+      )
+      < NUM > (< FLOATINGPOINT >)?
+    )? >
+| < #LETTER :
+    [ "a"-"z" ]
+  | [ "A"-"Z" ] >
+| < VAR :
+    (
+      "_"
+    | < LETTER >
+    )
+    (
+      < DIGIT >
+    | < LETTER >
+    | "_"
+    )* >
 | < IF : "?" >
 | < ELSE : "??" >
-| < READ : "<-">
+| < READ : "<-" >
 | < WRITE : "->" >
-| < COLON: ":" >
-| < SIMICOLON:";" >
+| < COLON : ":" >
+| < SIMICOLON : ";" >
 }
-BlockNode start():{
+
+BlockNode start() :
+{
   BlockNode bnode = new BlockNode();
   AbstractTreeNode n;
-  	FunctionNode fnode;
+  FunctionNode fnode;
   ExpressionNode enode;
 }
 {
-	(
-	  (fnode = Func(){Context.functionMap.put(fnode.getFunctionId(), fnode); })|	  ( n = Statement(){ bnode.addChild(n);})
-	)+ 
-	< EOF >
-	{
-	  return bnode;
-	}
+  (
+    (
+      fnode = Func()
+      {
+        Context.functionMap.put(fnode.getFunctionId(), fnode);
+      }
+    )
+  |
+    (
+      n = Statement()
+      {
+        bnode.addChild(n);
+      }
+    )
+  )+
+  < EOF >
+  {
+    return bnode;
+  }
 }
-FunctionNode Func():{
-  	FunctionNode fnode = new FunctionNode();
-  	Token t;
-  	ExpressionNode enode;
-  	AbstractTreeNode n;
-  } {
-  < FUNCTION > < LP >(t = < VAR > { fnode.getParIds().add(t.image);}(","t = < VAR > { fnode.getParIds().add(t.image);})*)?< RP > < WRITE > t = < VAR > { fnode.setFunctionId(t.image);} < COLON > 
+
+FunctionNode Func() :
+{
+  FunctionNode fnode = new FunctionNode();
+  Token t;
+  ExpressionNode enode;
+  AbstractTreeNode n;
+}
+{
+  < FUNCTION > < LP >
+  (
+    t = < VAR >
+    {
+      fnode.getParIds().add(t.image);
+    }
+    (
+      "," t = < VAR >
+      {
+        fnode.getParIds().add(t.image);
+      }
+    )*
+  )?
+  < RP > < WRITE > t = < VAR >
+  {
+    fnode.setFunctionId(t.image);
+  }
+  < COLON >
   (
     n = Statement()
-    { fnode.addChild(n); }
-  )*   
+    {
+      fnode.addChild(n);
+    }
+  )*
   < END >
-  { return fnode;}
+  {
+    return fnode;
+  }
 }
-FunctionCallNode CAllFUNCTION():
+
+FunctionCallNode CAllFUNCTION() :
 {
   FunctionCallNode enode = new FunctionCallNode();
-  AbstractTreeNode n,s;
+  AbstractTreeNode n, s;
   Token t;
 }
 {
-  t=< VAR >
-  <LP > ( n=E() {enode.addChild(n);}(","n = E() {enode.addChild(n);})* )?<RP >
+  t = < VAR > 
+  < LP >
+  (
+    n = E()
+    {
+      enode.addChild(n);
+    }
+    (
+      "," n = E()
+      {
+        enode.addChild(n);
+      }
+    )*
+  )?
+  < RP >
   {
-    enode.setOperationName(t.image);
+    enode.setOperation(t.image);
     return enode;
   }
 }
-ExpressionNode E():
+
+ExpressionNode E() :
 {
   ExpressionNode enode = new ExpressionNode();
   ExpressionNode node1;
@@ -118,260 +206,390 @@ ExpressionNode E():
   Token t = new Token();
 }
 {
-	node1=F() (t = < PLUS > node2=E() )?
-	{
-	  enode.setOperationName(t.image);
-	  enode.addChild(node1);
-	  if(node2!= null) { 
-	  	enode.addChild(node2);
-	  	return enode; 
-	 	}
-	  else
-	  	return node1;
-	}
+  node1 = M()
+  (
+    t = < PLUS > node2 = E()
+  )?
+  {
+    enode.setOperation(t.image);
+    enode.addChild(node1);
+    if (node2 != null)
+    {
+      enode.addChild(node2);
+      return enode;
+    }
+    else 
+    return node1;
+  }
 }
-ExpressionNode F():
+
+ExpressionNode M() :
 {
-  ExpressionNode fnode= new ExpressionNode();
+  ExpressionNode mnode = new ExpressionNode();
   ExpressionNode node1;
   ExpressionNode node2 = null;
   Token t = new Token();
+}
+{
+  node1 = F()
+  (
+    t = < MOD > node2 = M()
+  )?
+  {
+    mnode.setOperation(t.image);
+    mnode.addChild(node1);
+    if (node2 != null)
+    {
+      mnode.addChild(node2);
+      return mnode;
+    }
+    else 
+    return node1;
+  }
+}
 
-}
+ExpressionNode F() :
 {
-	node1 = Exp()(t=< MULTIPLY > node2=F())?
-	{
-	  fnode.setOperationName(t.image);
-	  fnode.addChild(node1);
-	  if(node2 != null) { 
-	  	fnode.addChild(node2);
-	  	return fnode;
-	 }
-	 else
-	 	return node1;
-	}
-}
-ExpressionNode Exp():
-{
-  ExpressionNode expnode= new ExpressionNode();
+  ExpressionNode fnode = new ExpressionNode();
   ExpressionNode node1;
   ExpressionNode node2 = null;
-  Token t = new Token();  
+  Token t = new Token();
 }
 {
-  node1 =N()( t=< POWER > node2=Exp())?
+  node1 = Exp()
+  (
+    t = < MULTIPLY > node2 = F()
+  )?
   {
-    expnode.setOperationName(t.image);
-    expnode.addChild(node1);
-    if(node2 != null) { 
-    	expnode.addChild(node2);
-   		return expnode;
-   }
-   	else
-   		return node1;
-  } 
+    fnode.setOperation(t.image);
+    fnode.addChild(node1);
+    if (node2 != null)
+    {
+      fnode.addChild(node2);
+      return fnode;
+    }
+    else 
+    return node1;
+  }
 }
-ExpressionNode N():
+
+ExpressionNode Exp() :
 {
-  ExpressionNode enode= new ExpressionNode();
+  ExpressionNode expnode = new ExpressionNode();
+  ExpressionNode node1;
+  ExpressionNode node2 = null;
+  Token t = new Token();
+}
+{
+  node1 = N()
+  (
+    t = < POWER > node2 = Exp()
+  )?
+  {
+    expnode.setOperation(t.image);
+    expnode.addChild(node1);
+    if (node2 != null)
+    {
+      expnode.addChild(node2);
+      return expnode;
+    }
+    else 
+    return node1;
+  }
+}
+
+ExpressionNode N() :
+{
+  ExpressionNode enode = new ExpressionNode();
   ExpressionNode node1 = null;
   ConstantNode conNode = null;
   VariableNode varNode = null;
-  Token t= new Token();
+  Token t = new Token();
 }
 {
-	(
-	  LOOKAHEAD(2)node1=CAllFUNCTION()|
-	t=< DOUBLE > { conNode = new ConstantNode();
-				   conNode.setValue(t.image);
-				 }|
-	t=< VAR >{  varNode = new VariableNode();
-				varNode.setVarId(t.image);
-			 }|
-	t=< NUM >{ conNode = new ConstantNode();
-					conNode.setValue(t.image);
-			 } |
-	< LP > node1=E() < RP >
-	)
-	{
-	  if(node1 != null) { 
-	  	return node1;
-	 }
-	  else
-	  	if(varNode != null)
-	  		return varNode;
-	  	else
-	  		return conNode;
-	}
+  (
+    LOOKAHEAD(2)
+    node1 = CAllFUNCTION()
+  | 
+    t = < DOUBLE >
+    {
+      conNode = new ConstantNode();
+      conNode.setValue(t.image);
+    }
+  | 
+    t = < VAR >
+    {
+      varNode = new VariableNode();
+      varNode.setVarId(t.image);
+    }
+  | 
+    t = < NUM >
+    {
+      conNode = new ConstantNode();
+      conNode.setValue(t.image);
+    }
+  | 
+    < LP > node1 = E() < RP >
+  )
+  {
+    if (node1 != null)
+    {
+      return node1;
+    }
+    else 
+    if (varNode != null) 
+    return varNode;
+    else 
+    return conNode;
+  }
+}
 
-}
-ForNode For():
+ForNode For() :
 {
-	Token t= new Token();
-	ForNode fnode = new ForNode();
-	ExpressionNode enode1, enode2, enode3;
-	enode3 = new ConstantNode(1);
-	BlockNode bnode = new BlockNode();
-	AbstractTreeNode n;
+  Token t = new Token();
+  ForNode fnode = new ForNode();
+  ExpressionNode enode1, enode2, enode3;
+  enode3 = new ConstantNode(1);
+  BlockNode bnode = new BlockNode();
+  AbstractTreeNode n;
 }
-{ 
-	< FLOOP >t = < VAR > <COLON >
-	enode1 = E() < WRITE >enode2 = E()(< COLON > enode3 = E())?
-	(
-	  n = Statement()
-		{
-		  bnode.addChild(n);
-		}
-	)+
-	< END >
-	{
-	  fnode.setVarName(t.image);
-	  fnode.addChild(enode1);
-	  fnode.addChild(enode2);
-	  fnode.addChild(enode3);
-	  fnode.addChild(bnode);
-	  return fnode;
-	}
+{
+  < FLOOP > t = < VAR > < COLON > 
+  enode1 = E() < WRITE > enode2 = E()
+  (
+    < COLON > enode3 = E()
+  )?
+  (
+    n = Statement()
+    {
+      bnode.addChild(n);
+    }
+  )+
+  < END >
+  {
+    fnode.setVarName(t.image);
+    fnode.addChild(enode1);
+    fnode.addChild(enode2);
+    fnode.addChild(enode3);
+    fnode.addChild(bnode);
+    return fnode;
+  }
 }
-ConditionNode Condition():
+
+ConditionNode Or() :
+{
+  Token t = new Token();
+  ConditionNode cnode1 ,cnode2 = null;
+  OrNode node = new OrNode();
+  ExpressionNode enode1;
+  ExpressionNode enode2;  
+}
+{
+  cnode1  = And()
+  (    
+  < OR >
+  cnode2 = Or()
+  )?
+  {
+    if(cnode2 != null) {
+    	node.addChild(cnode1);
+	    node.addChild(cnode2);
+   		 return node;
+ 	}
+ 	else
+ 		return cnode1;
+  }
+}
+
+ConditionNode And() :
+{
+  Token t = new Token();
+  ConditionNode cnode1 ,cnode2 = null;
+  AndNode node = new AndNode();
+  ExpressionNode enode1;
+  ExpressionNode enode2;  
+}
+{
+  cnode1  = Condition()
+  (
+	< AND >
+  	cnode2 = And()   )?   	
+  {
+    if(cnode2 != null) {
+    	node.addChild(cnode1);
+	    node.addChild(cnode2);
+   		 return node;
+ 	}
+ 	else
+ 		return cnode1;
+  }
+}
+ConditionNode Condition() :
 {
   Token t = new Token();
   ConditionNode cnode = new ConditionNode();
   ExpressionNode enode1;
   ExpressionNode enode2;
-  
 }
+{
+  enode1 = E()
+  (
+    t = < EQ >
+  | t = < LT >
+  | t = < GT >
+  | t = < LET >
+  | t = < GET >
+  | t = < NEQ >
+  )
+  enode2 = E()
   {
-	enode1=E()
-	(
-	  t=< EQ > | t=< LT >|t=< GT >|t=< LET >|t=< GET >|t=< NEQ >
-	)
-	enode2=E()
-	{
-	  cnode.setOperationName(t.image);
-	  cnode.addChild(enode1);
-	  cnode.addChild(enode2);
-	  return cnode;
-	}
+    cnode.setOperation(t.image);
+    cnode.addChild(enode1);
+    cnode.addChild(enode2);
+    return cnode;
+  }
 }
-WhileNode While():
+
+WhileNode While() :
 {
   WhileNode wnode = new WhileNode();
   BlockNode bnode = new BlockNode();
-  AbstractTreeNode n,s;
+  AbstractTreeNode n, s;
 }
 {
-  //condition() most return ATN
-	< WLOOP > < LP > n = Condition() < RP >
-	(
-	  //statement must return ATN
-	  s = Statement() { bnode.addChild(s);}
-	)+
-	< END >
-	{
-	  wnode.addChild(n);
-	  wnode.addChild(bnode);
-	  return wnode;
-	}
-}
-IfNode IF():{Token t = new Token();
-	IfNode ifNode = new IfNode();
-	ElseNode enode = new ElseNode();
-	ConditionNode cnode;
-	BlockNode bnode1 = new BlockNode();
-	BlockNode bnode2 = null;
-	AbstractTreeNode n;
-} {
-  
-  t = < IF > < LP > cnode = Condition() <RP >
+  < WLOOP > < LP > n = Or() < RP >
   (
-     n = Statement()
-     {
-		bnode1.addChild(n);
-     }
+    s = Statement()
+    {
+      bnode.addChild(s);
+    }
+  )+
+  < END >
+  {
+    wnode.addChild(n);
+    wnode.addChild(bnode);
+    return wnode;
+  }
+}
+
+IfNode IF() :
+{
+  Token t = new Token();
+  IfNode ifNode = new IfNode();
+  ElseNode enode = new ElseNode();
+  ConditionNode cnode;
+  BlockNode bnode1 = new BlockNode();
+  BlockNode bnode2 = null;
+  AbstractTreeNode n;
+}
+{
+  t = < IF > < LP > cnode = Or() < RP >
+  (
+    n = Statement()
+    {
+      bnode1.addChild(n);
+    }
   )*
   (
     < ELSE >
-    { bnode2 = new BlockNode(); }
+    {
+      bnode2 = new BlockNode();
+    }
     (
-     n = Statement()
-     {
-		bnode2.addChild(n);
-     }
-     )+
-	{
-	  enode.addChild(bnode2);
-	}
+      n = Statement()
+      {
+        bnode2.addChild(n);
+      }
+    )+
+    {
+      enode.addChild(bnode2);
+    }
   )?
   < END >
   {
     ifNode.addChild(cnode);
     ifNode.addChild(bnode1);
-    if(bnode2 != null)
-    	ifNode.addChild(enode);
+    if (bnode2 != null) 
+    ifNode.addChild(enode);
     return ifNode;
   }
 }
-AssignmentNode Assignment():
+
+AssignmentNode Assignment() :
 {
   Token t, t1;
   AssignmentNode anode = new AssignmentNode();
-  AbstractTreeNode n ;
-}{
-	 t = < VAR >  t1 = < assignment > n = E()
-	 {
-	   anode.setvarId(t.image);
-	   anode.setOperation(t1.image);
-	   anode.addChild(n);
-	   return anode;
-	 }
-}
-ReadNode Read():{ReadNode n = new ReadNode();
-Token t;
-
-}{
- <READ> t = <VAR>
- {
-   n.setVarName(t.image);
-
-  return n;
- }
-}
-WriteNode Write():{
-	WriteNode wnode = new WriteNode();
-	ExpressionNode enode;
-  }{
- <WRITE> enode = E()
-{
-  wnode.addChild(enode);
-  return wnode;
-}
-}
-ReturnNode Return():{
-	ExpressionNode enode;
-	
+  AbstractTreeNode n;
 }
 {
-	< Return > enode = E()
-	{
-	  ReturnNode rnode = new ReturnNode();
-	  rnode.addChild(enode);
-	  return rnode;
-	}
-	
-}
-
-AbstractTreeNode Statement():{
-	AbstractTreeNode n = null;
-}
+  t = < VAR > t1 = < assignment > n = E()
   {
-  
-  ( 
-  LOOKAHEAD(2)n = CAllFUNCTION()< SIMICOLON >|n = Assignment()< SIMICOLON >|
-    n = IF()|n = While()|n = Read()< SIMICOLON >|
-    n = Write()< SIMICOLON >|n = For()| LOOKAHEAD(2) n = Return() < SIMICOLON >
+    anode.setvarId(t.image);
+    anode.setOperation(t1.image);
+    anode.addChild(n);
+    return anode;
+  }
+}
+
+ReadNode Read() :
+{
+  ReadNode n = new ReadNode();
+  Token t;
+}
+{
+  < READ > t = < VAR >
+  {
+    n.setVarName(t.image);
+    return n;
+  }
+}
+
+WriteNode Write() :
+{
+  WriteNode wnode = new WriteNode();
+  ExpressionNode enode;
+}
+{
+  < WRITE > enode = E()
+  {
+    wnode.addChild(enode);
+    return wnode;
+  }
+}
+
+ReturnNode Return() :
+{
+  ExpressionNode enode;
+}
+{
+  < Return > enode = E()
+  {
+    ReturnNode rnode = new ReturnNode();
+    rnode.addChild(enode);
+    return rnode;
+  }
+}
+
+AbstractTreeNode Statement() :
+{
+  AbstractTreeNode n = null;
+}
+{
+  (
+    LOOKAHEAD(2)
+    n = CAllFUNCTION() < SIMICOLON >
+  | n = Assignment() < SIMICOLON >
+  | 
+    n = IF()
+  | n = While()
+  | n = Read() < SIMICOLON >
+  | 
+    n = Write() < SIMICOLON >
+  | n = For()
+  | LOOKAHEAD(2)
+    n = Return() < SIMICOLON >
   )
   {
-	    return n;
-   }
+    return n;
+  }
 }

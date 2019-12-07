@@ -7,10 +7,10 @@ public class IfNode extends AbstractTreeNode {
 	}
 	@Override
 	public Object execute(Context context) throws Exception {
-		if ((Boolean)getChildren().get(0).execute(context))
-			getChildren().get(1).execute(context);
-		else if (getChildren().size() > 2)
-			getChildren().get(2).execute(context);
+		if ((Boolean)children.get(0).execute(context))
+			children.get(1).execute(context);
+		else if (children.size() > 2)
+			children.get(2).execute(context);
 		
 		return null;
 	}

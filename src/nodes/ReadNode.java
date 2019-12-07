@@ -6,20 +6,19 @@ public class ReadNode extends AbstractTreeNode {
 		this.name = "Read Node";
 	}
 	
-	String varName;
+	private String varName;
 	
 	
 	@Override
 	public void print(String prefix) {
 		// TODO Auto-generated method stub
-		System.out.println(prefix + this.name + " var Name "+this.varName);
-		this.printChildren(prefix);
+		System.out.println(prefix + name + " var Name "+ varName);
+		printChildren(prefix);
 	}
 
 	@Override
 	public Object execute(Context context) {
-		Scanner scan = new Scanner(System.in);
-		context.getVars().put(this.varName,scan.nextDouble());
+		context.getVars().put(varName,(new Scanner(System.in)).nextDouble());
 		return null;
 	}
 

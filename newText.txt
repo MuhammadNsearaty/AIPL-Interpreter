@@ -1,4 +1,5 @@
 func(x,y)->gcd:
+	z := 30;
 	?(x < y)
 		return gcd(x, y - x);
 	??
@@ -9,9 +10,13 @@ func(x,y)->gcd:
 		!
 	!
 !
-func(x,y)->sum:
-return x + y;
+func(x, y)->sum:
+	z := gcd(x, y);
+	return x + y + z;
 !
-w := gcd(10 ,6, 13);
-->w;
-	
+func()->print:
+	->sum(9, 1);
+!
+z := 2;
+->sum(1, 2);
+->z;

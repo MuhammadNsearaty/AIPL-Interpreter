@@ -3,11 +3,11 @@ package nodes;
 public class ElseNode extends AbstractTreeNode {
 
 	public ElseNode() {
-		this.name = "Else Node";
+		name = "Else Node";
 	}
 	@Override
 	public Object execute(Context context) throws Exception {
-		getChildren().get(0).execute(context);
+		children.get(0).execute(context);
 		return null;
 	}
 

@@ -9,11 +9,12 @@ public class ConstantNode extends ExpressionNode {
 		super();
 		value = 0;
 		name = "Constant Node";
+		operation = "Leaf";
 	}
 	
 	@Override
 	public void print(String prefix) {
-		System.out.println(prefix + this.name + " " + value);
+		System.out.println(prefix + name + " " + value);
 		this.printChildren(prefix + " ");
 		
 	}

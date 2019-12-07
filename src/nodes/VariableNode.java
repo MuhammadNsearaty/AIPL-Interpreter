@@ -2,11 +2,12 @@ package nodes;
 
 public class VariableNode extends ExpressionNode {
 
-	String varId;
+	private String varId;
 	
 	public VariableNode() {
 		super();
 		name = "Variable Node";
+		operation = "Leaf";
 	}
 
 	public String getVarId() {
@@ -19,8 +20,8 @@ public class VariableNode extends ExpressionNode {
 	
 	@Override
 	public void print(String prefix) {
-		System.out.println(prefix + this.name + " " + varId);
-		this.printChildren(prefix + " ");
+		System.out.println(prefix + name + " " + varId);
+		printChildren(prefix + " ");
 		
 	}
 

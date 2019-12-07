@@ -3,12 +3,12 @@ package nodes;
 public class BlockNode extends AbstractTreeNode {
 	
 	public BlockNode() {
-		this.name = "Block Node";
+		name = "Block Node";
 	}
 
 	@Override
 	public Object execute(Context context) throws Exception {
-		for (AbstractTreeNode n : this.getChildren())
+		for (AbstractTreeNode n : children)
 			n.execute(context);	
 		return null;
 	}
