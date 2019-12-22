@@ -67,7 +67,6 @@ public class Context implements Cloneable{
 					findAndput(varName, value, "string");
 			}
 		}
-
 	}
 	
 	@Override

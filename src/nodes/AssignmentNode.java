@@ -26,13 +26,33 @@ public class AssignmentNode extends AbstractTreeNode {
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-	
+	private double f(Context context) throws Exception {
+		if(children.get(0) instanceof StringNode || children.get(0) instanceof CharNode)
+			throw new RunTimeException("operation is not supported");
+		double x;
+		if(children.get(0) instanceof VariableNode) {
+			Object ret = children.get(0).execute(context);
+			if(ret instanceof String || ret instanceof Character)
+				throw new RunTimeException("operation is not supported");
+			if(ret instanceof Integer)
+				x = (int) ret;
+			else
+				x = (double) ret;
+		}
+		else
+			x = (double) children.get(0).execute(context);
+		return x;
+	}
 	@Override
 	public Object execute(Context context) throws Exception {
+		if(varId.equals("ret")) {
+			context.getVars().put("ret", children.get(0).execute(context));
+			throw new ReturnException();
+		}
 		if(context.getVars().containsKey(varId)) {
 			Object b = context.getVars().get(varId);
-			double x = (double) children.get(0).execute(context);
 			if(b instanceof Double) {
+				double x = f(context);
 				double value = (double) b;
 				switch(operation){
 				case "*=":{context.getVars().put(varId, value * x); break;}
@@ -44,6 +64,7 @@ public class AssignmentNode extends AbstractTreeNode {
 				return null;
 			}
 			if(b instanceof Integer) {
+				double x = f(context);
 				int value = (int) b;
 				switch(operation){
 				case "*=":{context.getVars().put(varId, (int) (value * x)); break;}
@@ -55,12 +76,26 @@ public class AssignmentNode extends AbstractTreeNode {
 				return null;
 			}
 			if(!operation.equals(":="))
-				System.out.println(varId + " is a Character(s) variable ignoring operation");
+				throw new RunTimeException("operation is not supported");
+			
+			if(children.get(0) instanceof VariableNode)
+				context.put(varId, (String) children.get(0).execute(context).toString());
+			else
+			if(children.get(0) instanceof CharNode) {
+				if(b instanceof Character)
+					context.getVars().put(varId, children.get(0).execute(context));
+			}else
+			if(children.get(0) instanceof StringNode) {
+				if(b instanceof String)
+					context.getVars().put(varId, children.get(0).execute(context));
+			}
+			else
+				throw new RunTimeException("operation is not supported");	
 		}
 		else {
 			if(!operation.equals(":="))
 				System.out.println(varId + " dose not exist ignoring operation");
-			context.getVars().put(varId, (Double)children.get(0).execute(context));
+			context.put(varId, (String) children.get(0).execute(context).toString());	
 		}
 		return null;
 	}

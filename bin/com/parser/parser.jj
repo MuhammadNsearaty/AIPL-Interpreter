@@ -14,9 +14,10 @@ public class Parser
   {
     FileInputStream stream = new FileInputStream("newText.txt");
     new Parser(stream);
-/*    AbstractTreeNode node = start();
+    AbstractTreeNode node = start();
     node.execute(new Context());
-*/
+    char c = '\n';
+
   }
 }
 
@@ -67,7 +68,6 @@ TOKEN :
 | < LP : "(" >
 | < RP : ")" >
 | < FUNCTION : "func" >
-| < Return : "return" >
 | < DEF : "def">
 | < INT : "int" >
 | < TDOUBLE : "double" >
@@ -110,8 +110,8 @@ TOKEN :
 | < SIMICOLON : ";" >
 | < Quotation : "\'">
 | < DQuotation : "\"" >
-| < STRING : < DQuotation > (~["\""])* < DQuotation > >
-| < CHAR : < Quotation > (~["\'"]) < Quotation > >
+| < STRING : <  DQuotation > (~["\""])* <  DQuotation >>
+| < CHAR : < Quotation > (~["\'"])? < DIGIT >> 
 }
 DefNode def():
 {
@@ -192,7 +192,7 @@ FunctionNode Func() :
   }
 }
 
-FunctionCallNode CAllFUNCTION() :
+FunctionCallNode CAllFUNCTION():
 {
   FunctionCallNode enode = new FunctionCallNode();
   AbstractTreeNode n, s;
@@ -563,15 +563,34 @@ IfNode IF() :
     return ifNode;
   }
 }
-
-AssignmentNode Assignment() :
+StringNode Strings():
 {
-  Token t, t1;
-  AssignmentNode anode = new AssignmentNode();
-  AbstractTreeNode n;
+  Token t;
 }
 {
-  t = < VAR > t1 = < assignment > n = E()
+	t  = < STRING >
+  {
+    return new StringNode(t.image);
+  }
+}
+CharNode Chars():
+{
+  Token t;
+}
+{
+  t = < CHAR >
+  {
+    return new CharNode(t.image);
+  }
+}
+AssignmentNode Assignment() :
+{
+  Token t = null, t1 = null;
+  AssignmentNode anode = new AssignmentNode();
+  AbstractTreeNode n = null;
+}
+{
+  t = < VAR > t1 = < assignment > (n = E() | n = Strings() | n = Chars())
   {
     anode.setvarId(t.image);
     anode.setOperation(t1.image);
@@ -606,18 +625,6 @@ WriteNode Write() :
   }
 }
 
-ReturnNode Return() :
-{
-  ExpressionNode enode;
-}
-{
-  < Return > enode = E()
-  {
-    ReturnNode rnode = new ReturnNode();
-    rnode.addChild(enode);
-    return rnode;
-  }
-}
 
 AbstractTreeNode Statement() :
 {
@@ -636,8 +643,6 @@ AbstractTreeNode Statement() :
     n = Write() < SIMICOLON >
   | n = For()
   | n = def() < SIMICOLON >
-  | LOOKAHEAD(2)
-    n = Return() < SIMICOLON >
   )
   {
     return n;

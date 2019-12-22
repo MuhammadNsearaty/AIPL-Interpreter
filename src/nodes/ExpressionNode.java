@@ -61,7 +61,7 @@ public class ExpressionNode extends AbstractTreeNode {
 				}
 			}
 		}catch(ClassCastException e) {
-			throw new RunTimeException("Expression contains Strings");
+			throw new RunTimeException("operations on strings is not supported");
 		}
 	}
 

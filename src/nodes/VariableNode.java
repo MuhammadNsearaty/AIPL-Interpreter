@@ -28,7 +28,7 @@ public class VariableNode extends ExpressionNode {
 	@Override
 	public Object execute(Context context) throws Exception {
 		if(context.getVars().containsKey(varId))
-			return context.getVars().get(varId);
+			return context.getVars().get(varId).toString();
 		else
 			throw new RunTimeException("variable " + varId + " is not defined");
 		

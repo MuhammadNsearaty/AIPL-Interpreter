@@ -55,43 +55,43 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int FUNCTION = 26;
   /** RegularExpression Id. */
-  int Return = 27;
+  int DEF = 27;
   /** RegularExpression Id. */
-  int DEF = 28;
+  int INT = 28;
   /** RegularExpression Id. */
-  int INT = 29;
+  int TDOUBLE = 29;
   /** RegularExpression Id. */
-  int TDOUBLE = 30;
+  int TCHAR = 30;
   /** RegularExpression Id. */
-  int TCHAR = 31;
+  int TSTRING = 31;
   /** RegularExpression Id. */
-  int TSTRING = 32;
+  int FLOATINGPOINT = 32;
   /** RegularExpression Id. */
-  int FLOATINGPOINT = 33;
+  int DOUBLE = 33;
   /** RegularExpression Id. */
-  int DOUBLE = 34;
+  int LETTER = 34;
   /** RegularExpression Id. */
-  int LETTER = 35;
+  int VAR = 35;
   /** RegularExpression Id. */
-  int VAR = 36;
+  int IF = 36;
   /** RegularExpression Id. */
-  int IF = 37;
+  int ELSE = 37;
   /** RegularExpression Id. */
-  int ELSE = 38;
+  int READ = 38;
   /** RegularExpression Id. */
-  int READ = 39;
+  int WRITE = 39;
   /** RegularExpression Id. */
-  int WRITE = 40;
+  int COLON = 40;
   /** RegularExpression Id. */
-  int COLON = 41;
+  int SIMICOLON = 41;
   /** RegularExpression Id. */
-  int SIMICOLON = 42;
+  int Quotation = 42;
   /** RegularExpression Id. */
-  int Quotation = 43;
+  int DQuotation = 43;
   /** RegularExpression Id. */
-  int DQuotation = 44;
+  int STRING = 44;
   /** RegularExpression Id. */
-  int Ababa = 45;
+  int CHAR = 45;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -125,7 +125,6 @@ public interface ParserConstants {
     "\"(\"",
     "\")\"",
     "\"func\"",
-    "\"return\"",
     "\"def\"",
     "\"int\"",
     "\"double\"",
@@ -143,7 +142,8 @@ public interface ParserConstants {
     "\";\"",
     "\"\\\'\"",
     "\"\\\"\"",
-    "<Ababa>",
+    "<STRING>",
+    "<CHAR>",
     "\",\"",
   };
 
