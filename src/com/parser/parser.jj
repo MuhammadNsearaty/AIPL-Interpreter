@@ -14,8 +14,9 @@ public class Parser
   {
     FileInputStream stream = new FileInputStream("newText.txt");
     new Parser(stream);
-    AbstractTreeNode node = start();
+/*    AbstractTreeNode node = start();
     node.execute(new Context());
+*/
   }
 }
 
@@ -45,8 +46,9 @@ TOKEN : /* OPERATORS */
 | < LET : < LT > < EQ > >
 | < GET : < GT > < EQ > >
 | < NEQ : < LT > < GT > >
-| < OR : "or">
-| < AND : "and" >
+| < OR : "|">
+| < AND : "$" >
+| < NOT : "~" >
 | < assignment :
     ":="
   | "+="
@@ -66,6 +68,11 @@ TOKEN :
 | < RP : ")" >
 | < FUNCTION : "func" >
 | < Return : "return" >
+| < DEF : "def">
+| < INT : "int" >
+| < TDOUBLE : "double" >
+| < TCHAR : "char" >
+| < TSTRING : "string" >
 | < #FLOATINGPOINT : "." < NUM > >
 | < DOUBLE :
     < NUM > (< FLOATINGPOINT >)?
@@ -101,8 +108,23 @@ TOKEN :
 | < WRITE : "->" >
 | < COLON : ":" >
 | < SIMICOLON : ";" >
+| < Quotation : "\'">
+| < DQuotation : "\"" >
+| < STRING : < DQuotation > (~["\""])* < DQuotation > >
+| < CHAR : < Quotation > (~["\'"]) < Quotation > >
 }
-
+DefNode def():
+{
+  DefNode ret = new DefNode();
+  Token t;
+}
+{    < DEF > t = <VAR > { ret.setVarName(t.image); } < COLON > (t = < INT > | t = < TDOUBLE > | t = < TCHAR > | t = < TSTRING >)
+   
+  { ret.setVarType(t.image);
+  	return ret;
+   }
+  
+}
 BlockNode start() :
 {
   BlockNode bnode = new BlockNode();
@@ -380,9 +402,7 @@ ConditionNode Or() :
 {
   Token t = new Token();
   ConditionNode cnode1 ,cnode2 = null;
-  OrNode node = new OrNode();
-  ExpressionNode enode1;
-  ExpressionNode enode2;  
+  OrNode node = new OrNode();  
 }
 {
   cnode1  = And()
@@ -405,12 +425,10 @@ ConditionNode And() :
 {
   Token t = new Token();
   ConditionNode cnode1 ,cnode2 = null;
-  AndNode node = new AndNode();
-  ExpressionNode enode1;
-  ExpressionNode enode2;  
+  AndNode node = new AndNode();  
 }
 {
-  cnode1  = Condition()
+  cnode1  = Not()
   (
 	< AND >
   	cnode2 = And()   )?   	
@@ -424,14 +442,40 @@ ConditionNode And() :
  		return cnode1;
   }
 }
+ConditionNode Not() :
+{
+  Token t = null;
+  ConditionNode cnode1 ,cnode2 = null;
+  NotNode node = new NotNode(); 
+}
+{
+  (
+	t = < NOT >
+
+  )?
+  cnode1  = Condition()
+   	
+  {
+    if(t != null) {
+    	node.addChild(cnode1);
+   		return node;
+ 	}
+ 	else
+ 		return cnode1;
+  }
+}
+
 ConditionNode Condition() :
 {
   Token t = new Token();
   ConditionNode cnode = new ConditionNode();
-  ExpressionNode enode1;
-  ExpressionNode enode2;
+  ConditionNode node1 = null;
+  ExpressionNode enode1 = null;
+  ExpressionNode enode2 = null;
 }
 {
+(    LOOKAHEAD(3)
+  (
   enode1 = E()
   (
     t = < EQ >
@@ -442,7 +486,12 @@ ConditionNode Condition() :
   | t = < NEQ >
   )
   enode2 = E()
+  )|
+  < LP > node1 = Or() < RP >
+)
   {
+    if(node1 != null)
+    	return node1;
     cnode.setOperation(t.image);
     cnode.addChild(enode1);
     cnode.addChild(enode2);
@@ -586,6 +635,7 @@ AbstractTreeNode Statement() :
   | 
     n = Write() < SIMICOLON >
   | n = For()
+  | n = def() < SIMICOLON >
   | LOOKAHEAD(2)
     n = Return() < SIMICOLON >
   )

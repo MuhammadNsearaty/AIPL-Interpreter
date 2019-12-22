@@ -30,14 +30,32 @@ public class AssignmentNode extends AbstractTreeNode {
 	@Override
 	public Object execute(Context context) throws Exception {
 		if(context.getVars().containsKey(varId)) {
-			double value = context.getVars().get(varId);
-			switch(operation){
-			case "*=":{context.getVars().put(varId, value * (Double)children.get(0).execute(context)); break;}
-			case "+=":{context.getVars().put(varId, value + (Double)children.get(0).execute(context)); break;}
-			case "/=":{context.getVars().put(varId, value / (Double)children.get(0).execute(context)); break;}
-			case "-=":{context.getVars().put(varId, value - (Double)children.get(0).execute(context)); break;}
-			default:{context.getVars().put(varId, (Double)children.get(0).execute(context));}
-			}		
+			Object b = context.getVars().get(varId);
+			double x = (double) children.get(0).execute(context);
+			if(b instanceof Double) {
+				double value = (double) b;
+				switch(operation){
+				case "*=":{context.getVars().put(varId, value * x); break;}
+				case "+=":{context.getVars().put(varId, value + x); break;}
+				case "/=":{context.getVars().put(varId, value / x); break;}
+				case "-=":{context.getVars().put(varId, value - x); break;}
+				default:{context.getVars().put(varId, x);}
+				}
+				return null;
+			}
+			if(b instanceof Integer) {
+				int value = (int) b;
+				switch(operation){
+				case "*=":{context.getVars().put(varId, (int) (value * x)); break;}
+				case "+=":{context.getVars().put(varId, (int) (value + x)); break;}
+				case "/=":{context.getVars().put(varId, (int) (value / x)); break;}
+				case "-=":{context.getVars().put(varId, (int) (value - x)); break;}
+				default:{context.getVars().put(varId, (int)x);}
+				}
+				return null;
+			}
+			if(!operation.equals(":="))
+				System.out.println(varId + " is a Character(s) variable ignoring operation");
 		}
 		else {
 			if(!operation.equals(":="))

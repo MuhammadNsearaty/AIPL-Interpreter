@@ -1,22 +1,2 @@
-func(x,y)->gcd:
-	z := 30;
-	?(x < y)
-		return gcd(x, y - x);
-	??
-		?(x > y)
-			return gcd(x - y, y);
-		??
-			return x;
-		!
-	!
-!
-func(x, y)->sum:
-	z := gcd(x, y);
-	return x + y + z;
-!
-func()->print:
-	->sum(9, 1);
-!
-z := 2;
-->sum(1, 2);
-->z;
+
+x := "anana"

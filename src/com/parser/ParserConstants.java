@@ -35,45 +35,63 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int AND = 16;
   /** RegularExpression Id. */
-  int assignment = 17;
+  int NOT = 17;
   /** RegularExpression Id. */
-  int DIGIT = 18;
+  int assignment = 18;
   /** RegularExpression Id. */
-  int NUM = 19;
+  int DIGIT = 19;
   /** RegularExpression Id. */
-  int END = 20;
+  int NUM = 20;
   /** RegularExpression Id. */
-  int FLOOP = 21;
+  int END = 21;
   /** RegularExpression Id. */
-  int WLOOP = 22;
+  int FLOOP = 22;
   /** RegularExpression Id. */
-  int LP = 23;
+  int WLOOP = 23;
   /** RegularExpression Id. */
-  int RP = 24;
+  int LP = 24;
   /** RegularExpression Id. */
-  int FUNCTION = 25;
+  int RP = 25;
   /** RegularExpression Id. */
-  int Return = 26;
+  int FUNCTION = 26;
   /** RegularExpression Id. */
-  int FLOATINGPOINT = 27;
+  int Return = 27;
   /** RegularExpression Id. */
-  int DOUBLE = 28;
+  int DEF = 28;
   /** RegularExpression Id. */
-  int LETTER = 29;
+  int INT = 29;
   /** RegularExpression Id. */
-  int VAR = 30;
+  int TDOUBLE = 30;
   /** RegularExpression Id. */
-  int IF = 31;
+  int TCHAR = 31;
   /** RegularExpression Id. */
-  int ELSE = 32;
+  int TSTRING = 32;
   /** RegularExpression Id. */
-  int READ = 33;
+  int FLOATINGPOINT = 33;
   /** RegularExpression Id. */
-  int WRITE = 34;
+  int DOUBLE = 34;
   /** RegularExpression Id. */
-  int COLON = 35;
+  int LETTER = 35;
   /** RegularExpression Id. */
-  int SIMICOLON = 36;
+  int VAR = 36;
+  /** RegularExpression Id. */
+  int IF = 37;
+  /** RegularExpression Id. */
+  int ELSE = 38;
+  /** RegularExpression Id. */
+  int READ = 39;
+  /** RegularExpression Id. */
+  int WRITE = 40;
+  /** RegularExpression Id. */
+  int COLON = 41;
+  /** RegularExpression Id. */
+  int SIMICOLON = 42;
+  /** RegularExpression Id. */
+  int Quotation = 43;
+  /** RegularExpression Id. */
+  int DQuotation = 44;
+  /** RegularExpression Id. */
+  int Ababa = 45;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -95,8 +113,9 @@ public interface ParserConstants {
     "<LET>",
     "<GET>",
     "<NEQ>",
-    "\"or\"",
-    "\"and\"",
+    "\"|\"",
+    "\"$\"",
+    "\"~\"",
     "<assignment>",
     "<DIGIT>",
     "<NUM>",
@@ -107,6 +126,11 @@ public interface ParserConstants {
     "\")\"",
     "\"func\"",
     "\"return\"",
+    "\"def\"",
+    "\"int\"",
+    "\"double\"",
+    "\"char\"",
+    "\"string\"",
     "<FLOATINGPOINT>",
     "<DOUBLE>",
     "<LETTER>",
@@ -117,6 +141,9 @@ public interface ParserConstants {
     "\"->\"",
     "\":\"",
     "\";\"",
+    "\"\\\'\"",
+    "\"\\\"\"",
+    "<Ababa>",
     "\",\"",
   };
 

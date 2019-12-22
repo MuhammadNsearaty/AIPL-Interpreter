@@ -17,8 +17,8 @@ public class ReadNode extends AbstractTreeNode {
 	}
 
 	@Override
-	public Object execute(Context context) {
-		context.getVars().put(varName,(new Scanner(System.in)).nextDouble());
+	public Object execute(Context context) throws RunTimeException {
+		context.put(varName, new Scanner(System.in).next());
 		return null;
 	}
 
