@@ -57,41 +57,35 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int DEF = 27;
   /** RegularExpression Id. */
-  int INT = 28;
+  int DATA = 28;
   /** RegularExpression Id. */
-  int TDOUBLE = 29;
+  int FLOATINGPOINT = 29;
   /** RegularExpression Id. */
-  int TCHAR = 30;
+  int DOUBLE = 30;
   /** RegularExpression Id. */
-  int TSTRING = 31;
+  int LETTER = 31;
   /** RegularExpression Id. */
-  int FLOATINGPOINT = 32;
+  int VAR = 32;
   /** RegularExpression Id. */
-  int DOUBLE = 33;
+  int IF = 33;
   /** RegularExpression Id. */
-  int LETTER = 34;
+  int ELSE = 34;
   /** RegularExpression Id. */
-  int VAR = 35;
+  int READ = 35;
   /** RegularExpression Id. */
-  int IF = 36;
+  int WRITE = 36;
   /** RegularExpression Id. */
-  int ELSE = 37;
+  int COLON = 37;
   /** RegularExpression Id. */
-  int READ = 38;
+  int SIMICOLON = 38;
   /** RegularExpression Id. */
-  int WRITE = 39;
+  int Quotation = 39;
   /** RegularExpression Id. */
-  int COLON = 40;
+  int DQuotation = 40;
   /** RegularExpression Id. */
-  int SIMICOLON = 41;
+  int STRING = 41;
   /** RegularExpression Id. */
-  int Quotation = 42;
-  /** RegularExpression Id. */
-  int DQuotation = 43;
-  /** RegularExpression Id. */
-  int STRING = 44;
-  /** RegularExpression Id. */
-  int CHAR = 45;
+  int CHAR = 42;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -126,10 +120,7 @@ public interface ParserConstants {
     "\")\"",
     "\"func\"",
     "\"def\"",
-    "\"int\"",
-    "\"double\"",
-    "\"char\"",
-    "\"string\"",
+    "<DATA>",
     "<FLOATINGPOINT>",
     "<DOUBLE>",
     "<LETTER>",

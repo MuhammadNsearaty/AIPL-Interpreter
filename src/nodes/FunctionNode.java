@@ -5,8 +5,17 @@ import java.util.ArrayList;
 public class FunctionNode extends BlockNode {
 	
 	private ArrayList<String> parIds = new ArrayList<>();
+	private ArrayList<String> parTypes = new ArrayList<>();
 	private String functionId;
 	
+	public ArrayList<String> getParTypes() {
+		return parTypes;
+	}
+
+	public void setParTypes(ArrayList<String> parTypes) {
+		this.parTypes = parTypes;
+	}
+
 	public FunctionNode() {
 		this.name = "Function Node";
 	}

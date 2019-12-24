@@ -1,3 +1,2 @@
-def x : int;
-x := 3.2;
-->x;
+func (int x, int y, double z, string s, char c) -> fun:
+!

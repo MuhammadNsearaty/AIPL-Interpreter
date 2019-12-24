@@ -69,10 +69,7 @@ TOKEN :
 | < RP : ")" >
 | < FUNCTION : "func" >
 | < DEF : "def">
-| < INT : "int" >
-| < TDOUBLE : "double" >
-| < TCHAR : "char" >
-| < TSTRING : "string" >
+| < DATA : "int" | "double" | "char" | "string">
 | < #FLOATINGPOINT : "." < NUM > >
 | < DOUBLE :
     < NUM > (< FLOATINGPOINT >)?
@@ -111,14 +108,14 @@ TOKEN :
 | < Quotation : "\'">
 | < DQuotation : "\"" >
 | < STRING : <  DQuotation > (~["\""])* <  DQuotation >>
-| < CHAR : < Quotation > (~["\'"])? < DIGIT >> 
+| < CHAR : < Quotation > (~["\'"] | "\\"(["r","n","t"]| < DIGIT >(< DIGIT >)?(< DIGIT >)?))? < Quotation >> 
 }
 DefNode def():
 {
   DefNode ret = new DefNode();
   Token t;
 }
-{    < DEF > t = <VAR > { ret.setVarName(t.image); } < COLON > (t = < INT > | t = < TDOUBLE > | t = < TCHAR > | t = < TSTRING >)
+{    < DEF > t = <VAR > { ret.setVarName(t.image); } < COLON > t = < DATA >
    
   { ret.setVarType(t.image);
   	return ret;
@@ -164,12 +161,21 @@ FunctionNode Func() :
 {
   < FUNCTION > < LP >
   (
+    t = < DATA >
+    {
+		fnode.getParTypes().add(t.image);
+    }
     t = < VAR >
     {
       fnode.getParIds().add(t.image);
     }
     (
-      "," t = < VAR >
+      ","
+	  t = < DATA >
+	  {
+		fnode.getParTypes().add(t.image);
+	  }
+      t = < VAR >
       {
         fnode.getParIds().add(t.image);
       }
@@ -202,12 +208,12 @@ FunctionCallNode CAllFUNCTION():
   t = < VAR > 
   < LP >
   (
-    n = E()
+    (n = E() | n = Strings() | n = Chars())
     {
       enode.addChild(n);
     }
     (
-      "," n = E()
+      "," (n = E() | n = Strings() | n = Chars())
       {
         enode.addChild(n);
       }
