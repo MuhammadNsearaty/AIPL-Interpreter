@@ -4,8 +4,6 @@ public class CharNode extends ExpressionNode {
 	
 	char c;
 	
-	
-
 	public CharNode(String s) {
 		super();
 		if(s.length() >= 3)

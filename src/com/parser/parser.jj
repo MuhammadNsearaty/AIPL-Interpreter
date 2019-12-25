@@ -6,18 +6,16 @@ options
 PARSER_BEGIN(Parser)
 package com.parser;
 import java.io.FileInputStream;
+import java.io.BufferedInputStream;
 import nodes.*;
 
 public class Parser
 {
-  public static void main(String args []) throws Exception
-  {
-    FileInputStream stream = new FileInputStream("newText.txt");
+  public static void main(String args []) throws Exception {
+    BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
     new Parser(stream);
     AbstractTreeNode node = start();
     node.execute(new Context());
-    char c = '\n';
-
   }
 }
 
@@ -108,7 +106,7 @@ TOKEN :
 | < Quotation : "\'">
 | < DQuotation : "\"" >
 | < STRING : <  DQuotation > (~["\""])* <  DQuotation >>
-| < CHAR : < Quotation > (~["\'"] | "\\"(["r","n","t"]| < DIGIT >(< DIGIT >)?(< DIGIT >)?))? < Quotation >> 
+| < CHAR : < Quotation > (~["\'"]) < Quotation >> 
 }
 DefNode def():
 {
@@ -493,7 +491,33 @@ ConditionNode Condition() :
   )
   enode2 = E()
   )|
-  < LP > node1 = Or() < RP >
+  (    < LP > node1 = Or() < RP >
+  )| LOOKAHEAD(3)(
+    (      enode1 = Strings()
+	| t = < VAR > { enode1 = new VariableNode(t.image);} 
+	)
+    (
+      t = < EQ >
+    | t = < NEQ >    )
+    (
+      enode2 = Strings()
+	| t = < VAR > { enode2 = new VariableNode(t.image);} 
+	)
+  )
+| LOOKAHEAD(3)(
+    (
+      enode1 = Chars()
+	| t = < VAR > { enode1 = new VariableNode(t.image);} 
+	)
+    (
+      t = < EQ >
+    | t = < NEQ >
+    )
+    (
+      enode2 = Chars()
+	| t = < VAR > { enode2 = new VariableNode(t.image);} 
+	)
+  )
 )
   {
     if(node1 != null)
@@ -624,7 +648,7 @@ WriteNode Write() :
   ExpressionNode enode;
 }
 {
-  < WRITE > enode = E()
+  < WRITE > (enode = E() | enode = Strings() | enode = Chars())
   {
     wnode.addChild(enode);
     return wnode;

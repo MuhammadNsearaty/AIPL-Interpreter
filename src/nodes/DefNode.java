@@ -29,26 +29,7 @@ public class DefNode extends AbstractTreeNode{
 	@Override
 	public Object execute(Context context) throws Exception {
 		if(!context.getVars().containsKey(varName))
-			switch (varType) {
-			case "int":{
-				context.getVars().put(varName, new Integer(0));
-				break;
-			}
-			case "char":{
-				context.getVars().put(varName, new Character('\0'));
-				break;
-			}
-			case "string":{
-				context.getVars().put(varName, new String(""));			
-				break;
-			}
-			case "double":{
-				context.getVars().put(varName, new Double(0));
-				break;
-			}
-			default:
-				break;
-			}
+			context.createVar(varName, varType);
 		else
 			throw new RunTimeException("you can't change variable type");
 		return null;

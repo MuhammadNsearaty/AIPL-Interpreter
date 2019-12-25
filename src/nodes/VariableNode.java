@@ -9,6 +9,12 @@ public class VariableNode extends ExpressionNode {
 		name = "Variable Node";
 		operation = "Leaf";
 	}
+	
+	public VariableNode(String s) {
+		this.varId = s;
+		name = "Variable Node";
+		operation = "Leaf";
+	}
 
 	public String getVarId() {
 		return varId;
@@ -28,7 +34,7 @@ public class VariableNode extends ExpressionNode {
 	@Override
 	public Object execute(Context context) throws Exception {
 		if(context.getVars().containsKey(varId))
-			return context.getVars().get(varId).toString();
+			return context.getVars().get(varId);
 		else
 			throw new RunTimeException("variable " + varId + " is not defined");
 		

@@ -53,8 +53,17 @@ public class FunctionCallNode extends ExpressionNode {
 
 		Object ret = null;
 		Context c = new Context();
-		for(int i = 0;i < parIds.size();i++)
-			c.put(parIds.get(i), pars.get(i).toString());
+		for(int i = 0;i < parIds.size();i++) {
+			c.createVar(parIds.get(i), parTypes.get(i));
+			if(children.get(i) instanceof VariableNode) {
+				c.put(parIds.get(i), pars.get(i).toString());
+				continue;
+			}
+			if(!parTypes.get(i).equals("int"))
+				c.findAndput(parIds.get(i), pars.get(i), parTypes.get(i));
+			else
+				c.findAndput(parIds.get(i), pars.get(i), "double");
+		}
 		try {
 			Context.functionMap.get(operation).execute(c);
 		} catch (ReturnException e) {

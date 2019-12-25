@@ -1,5 +1,11 @@
 func (int x, int y, double z, string s, char c) -> fun:
-	ret := "Fuck This Lang";
+	->x;
+	->y;
+	->z;
+	->s;
+	->c;
 !
-
-->fun(1, 5, 9.2, "ababa", 'k');
+def w : double;
+w := 3.2;
+fun(w, 5, 888.2, "ababa", 'k');
+->w;
