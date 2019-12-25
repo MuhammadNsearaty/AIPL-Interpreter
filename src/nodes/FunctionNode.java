@@ -39,14 +39,5 @@ public class FunctionNode extends BlockNode {
 
 	public void setParIds(ArrayList<String> parIds) {
 		this.parIds = parIds;
-	}
-
-	@Override
-	public Object execute(Context context) throws Exception {
-		
-		return super.execute((Context) context.clone());
 	}	
-	
-	
-
 }

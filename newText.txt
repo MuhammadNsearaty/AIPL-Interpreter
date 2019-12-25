@@ -1,2 +1,5 @@
 func (int x, int y, double z, string s, char c) -> fun:
+	ret := "Fuck This Lang";
 !
+
+->fun(1, 5, 9.2, "ababa", 'k');
