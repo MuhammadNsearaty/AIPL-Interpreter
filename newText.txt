@@ -4,8 +4,10 @@ func (int x, int y, double z, string s, char c) -> fun:
 	->z;
 	->s;
 	->c;
+	ababa := 3;
 !
 def w : double;
 w := 3.2;
 fun(w, 5, 888.2, "ababa", 'k');
 ->w;
+->ababa;

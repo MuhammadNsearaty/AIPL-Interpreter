@@ -1,8 +1,7 @@
 package nodes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
+
 
 public class FunctionCallNode extends ExpressionNode {
 	public FunctionCallNode() {
@@ -28,22 +27,22 @@ public class FunctionCallNode extends ExpressionNode {
 			switch (parTypes.get(i)) {
 			case "string":{
 				if(!(b instanceof String))
-					builder.append("Parameter " + (i + 1) + " can only be a string\n");
+					builder.append(operation + " Parameter " + (i + 1) + " can only be a string\n");
 				break;
 			}
 			case "char":{
 				if(!(b instanceof Character))
-					builder.append("Parameter " + (i + 1) + " can only be a character\n");		
+					builder.append(operation + " Parameter " + (i + 1) + " can only be a character\n");		
 				break;
 			}			
 			case "int":{
 				if(!(b instanceof Number))
-					builder.append("Parameter " + (i + 1) + " can only be a number\n");
+					builder.append(operation + " Parameter " + (i + 1) + " can only be a number\n");
 				break;
 			}
 			case "double":{
 				if(!(b instanceof Number))
-					builder.append("Parameter " + (i + 1) + " can only be a number\n");				
+					builder.append(operation + " Parameter " + (i + 1) + " can only be a number\n");				
 				break;
 			}
 			}

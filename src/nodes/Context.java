@@ -8,9 +8,7 @@ public class Context implements Cloneable{
 	public HashMap<String, Object> getVars() {
 		return vars;
 	}
-	public void pushFunction() {}
-	public void popFunctoin() {}
-
+	
 	public void findAndput(String varName, Object value, String type) throws RunTimeException {
 		if(!vars.containsKey(varName))
 			vars.put(varName, value);
@@ -105,6 +103,7 @@ public class Context implements Cloneable{
 			throw new RunTimeException("variable already defined");
 
 	}	
+	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		Context copy = new Context();
