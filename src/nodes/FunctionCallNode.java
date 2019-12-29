@@ -102,5 +102,17 @@ public class FunctionCallNode extends ExpressionNode {
 		System.out.println(prefix + name + " " + operation);
 		printChildren(prefix);
 	}
+	
+	public Object convert(Context context) {
+		String str= operation;//function name
+		str += "(";
+		for(int i = 0 ; i < children.size();i++) {
+			str +=children.get(i).convert(context);
+			if(i != children.size()-1)
+				str+=",";
+		}
+		str+=")";
+		return str + ";";
+	}
 
 }

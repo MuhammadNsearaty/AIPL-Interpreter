@@ -103,7 +103,7 @@ public class AssignmentNode extends AbstractTreeNode {
 	@Override
 	public Object convert(Context context) {
 		// TODO Auto-generated method stub
-		return null;
+		return varId + "=" + children.get(0).convert(context) + ";";
 	}
 
 }

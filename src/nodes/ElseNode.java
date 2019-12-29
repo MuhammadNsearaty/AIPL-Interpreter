@@ -13,8 +13,7 @@ public class ElseNode extends AbstractTreeNode {
 
 	@Override
 	public Object convert(Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		return "else{" + children.get(0).convert(context) + "}";
 	}
 
 }

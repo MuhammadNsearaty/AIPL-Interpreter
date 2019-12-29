@@ -17,8 +17,8 @@ public class WhileNode extends AbstractTreeNode {
 
 	@Override
 	public Object convert(Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		return "while(" + children.get(0).convert(context)
+				+ "){" + children.get(1).convert(context) + "}";
 	}
 
 }

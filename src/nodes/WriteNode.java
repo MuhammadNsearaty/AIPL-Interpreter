@@ -14,7 +14,7 @@ public class WriteNode extends AbstractTreeNode {
 	@Override
 	public Object convert(Context context) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cout << " + children.get(0).convert(context) + " << endl;";
 	}
 
 }

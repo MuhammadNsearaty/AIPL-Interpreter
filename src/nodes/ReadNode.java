@@ -32,8 +32,7 @@ public class ReadNode extends AbstractTreeNode {
 
 	@Override
 	public Object convert(Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		return "cin >> " + varName + ";";
 	}
 
 }

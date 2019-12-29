@@ -44,7 +44,10 @@ public class ForNode extends AbstractTreeNode {
 	@Override
 	public Object convert(Context context) {
 		// TODO Auto-generated method stub
-		return null;
+		return "for(" + varName + "=" + children.get(0).convert(context)
+				+";" + varName + "<=" + children.get(1).convert(context)
+				+ ";" + varName + "+=" + (children.size() > 3? children.get(3).convert(context) : "1")
+				+ ")\r\n{" + children.get(2).convert(context) + "}" ;
 	}
 
 }

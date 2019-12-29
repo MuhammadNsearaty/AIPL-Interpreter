@@ -82,8 +82,13 @@ public class ConditionNode extends AbstractTreeNode {
 
 	@Override
 	public Object convert(Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		String op = operation;
+		if (op.equals("="))
+			op = "==";
+		if (op.equals("<>"))
+			op = "!=";
+		return children.get(0).convert(context) + op 
+				+ children.get(1).convert(context);
 	}
 
 }

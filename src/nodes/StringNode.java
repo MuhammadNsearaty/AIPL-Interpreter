@@ -12,5 +12,8 @@ public class StringNode extends ExpressionNode{
 	public Object execute(Context context) throws Exception {
 		return s;
 	}
+	public Object convert(Context context){
+		return s;
+	}
 	
 }

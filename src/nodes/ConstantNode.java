@@ -40,8 +40,7 @@ public class ConstantNode extends ExpressionNode {
 
 	@Override
 	public Object convert(Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		return value +"";
 	}
 
 }

@@ -17,8 +17,10 @@ public class BlockNode extends AbstractTreeNode {
 
 	@Override
 	public Object convert(Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		String [] res = new String[children.size()];
+		for(int i=0;i<res.length;i++)
+			res[i] = (String)children.get(i).convert(context);
+		return String.join("\r\n", res);
 	}
 
 }

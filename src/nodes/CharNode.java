@@ -16,5 +16,9 @@ public class CharNode extends ExpressionNode {
 	public Object execute(Context context) throws Exception {
 		return c;
 	}
+	
+	public Object convert(Context context) {
+		return c +"";
+	}
 
 }
