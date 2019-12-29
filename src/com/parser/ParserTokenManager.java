@@ -2,6 +2,7 @@
 package com.parser;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
+import java.util.TreeSet;
 import nodes.*;
 
 /** Token Manager. */
@@ -257,7 +258,7 @@ static private int jjMoveNfa_0(int startState, int curPos)
                   else if (curChar == 60)
                      jjAddStates(4, 5);
                   else if (curChar == 39)
-                     jjstateSet[jjnewStateCnt++] = 35;
+                     jjCheckNAddTwoStates(35, 36);
                   else if (curChar == 34)
                      jjCheckNAddTwoStates(32, 33);
                   else if (curChar == 58)
@@ -272,6 +273,15 @@ static private int jjMoveNfa_0(int startState, int curPos)
                      jjCheckNAdd(4);
                   else if (curChar == 43)
                      jjCheckNAdd(4);
+                  break;
+               case 35:
+                  if ((0xffffff7fffffffffL & l) != 0L)
+                     jjCheckNAdd(36);
+                  else if (curChar == 39)
+                  {
+                     if (kind > 41)
+                        kind = 41;
+                  }
                   break;
                case 17:
                case 30:
@@ -343,11 +353,7 @@ static private int jjMoveNfa_0(int startState, int curPos)
                   break;
                case 34:
                   if (curChar == 39)
-                     jjstateSet[jjnewStateCnt++] = 35;
-                  break;
-               case 35:
-                  if ((0xffffff7fffffffffL & l) != 0L)
-                     jjstateSet[jjnewStateCnt++] = 36;
+                     jjCheckNAddTwoStates(35, 36);
                   break;
                case 36:
                   if (curChar == 39 && kind > 41)
@@ -446,6 +452,9 @@ static private int jjMoveNfa_0(int startState, int curPos)
                   else if (curChar == 105)
                      jjstateSet[jjnewStateCnt++] = 11;
                   break;
+               case 35:
+                  jjstateSet[jjnewStateCnt++] = 36;
+                  break;
                case 17:
                   if ((0x7fffffe87fffffeL & l) != 0L)
                   {
@@ -541,9 +550,6 @@ static private int jjMoveNfa_0(int startState, int curPos)
                   if (kind > 31)
                      kind = 31;
                   jjCheckNAdd(30);
-                  break;
-               case 35:
-                  jjstateSet[jjnewStateCnt++] = 36;
                   break;
                case 45:
                   if ((0x2000000020L & l) != 0L)

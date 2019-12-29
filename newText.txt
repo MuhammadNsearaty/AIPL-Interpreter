@@ -5,30 +5,29 @@ func (int x, int y, double z, string s, char c) -> fun:
 	->s;
 	->c;
 !
+func()->a:
+	->f(1);
+!
 func(int x)->f:
 	?(x = 1)
-		->"ababa1";
-		def ret : int;
+		->"in f";
 		ret := 0;
 	!
 	func(int y)->g:
+		func()->k:
+			->g(2);
+		!
+		?(y = 2)
+			ret := 1;
+		!
 		?(y = 0)
+			k();
 			ret := 12;
 		!
-		func()->k:
-			->g(0);
-		!
-		k();
-		x := g(0);
-		->f(1);
-		ret := x;
+		->g(0);
+		a();
 	!
-	ret := g(1);
+	g(1);
 !
 x := 1;
-y := 0;
-?((x < y) | ((2 + 3 < 7) $ y = 0))
- 	->"ababa";
- !
- 
-->f(x + 1);
+f(x + 1);

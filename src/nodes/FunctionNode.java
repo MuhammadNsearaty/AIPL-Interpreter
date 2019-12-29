@@ -8,8 +8,18 @@ public class FunctionNode extends BlockNode {
 	private ArrayList<String> parIds = new ArrayList<>();
 	private ArrayList<String> parTypes = new ArrayList<>();
 	private String functionId;
+	private FunctionNode ancestor;
 	private HashMap<String, FunctionNode> myFunctions = new HashMap<>();
 	
+
+	public FunctionNode getAncestor() {
+		return ancestor;
+	}
+
+	public void setAncestor(FunctionNode ancestor) {
+		this.ancestor = ancestor;
+	}
+
 	public void addFunction(FunctionNode func) {
 		myFunctions.put(func.functionId, func);
 	}
@@ -53,12 +63,19 @@ public class FunctionNode extends BlockNode {
 	}
 	@Override
 	public Object execute(Context context) throws Exception {
-		if(!Context.privateFunctionMaps.contains(myFunctions))
+		boolean b = Context.privateFunctionMaps.contains(myFunctions);
+		if(!b)
 			Context.privateFunctionMaps.push(myFunctions);
-		for (AbstractTreeNode n : children)
-			n.execute(context);
-		Context.privateFunctionMaps.pop();
-		return null;
+		Object ret = null;
+		try {
+			for (AbstractTreeNode n : children)
+				n.execute(context);
+		}catch(ReturnException e) {
+			ret = e.ret;
+		}
+		if(!b)
+			Context.privateFunctionMaps.pop();
+		return ret;
 	}
 
 }

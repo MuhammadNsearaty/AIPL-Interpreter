@@ -30,7 +30,7 @@ public class testFX extends Application{
 		
 		System.setOut(out);
 		System.setIn(in);
-		System.setErr(out);
+		//System.setErr(out);
 		
 				
 		Thread thread[] = new Thread[2] ;

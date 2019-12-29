@@ -7,17 +7,19 @@ PARSER_BEGIN(Parser)
 package com.parser;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
+import java.util.TreeSet;
+
 import nodes.*;
 
 public class Parser
 {
-/*  public static void main(String args []) throws Exception {
+  public static void main(String args []) throws Exception {
     BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
     new Parser(stream);
     AbstractTreeNode node = start();
     node.execute(new Context());
   }
-  */
+  
 }
 
 PARSER_END(Parser)
@@ -107,7 +109,7 @@ TOKEN :
 | < Quotation : "\'">
 | < DQuotation : "\"" >
 | < STRING : <  DQuotation > (~["\""])* <  DQuotation >>
-| < CHAR : < Quotation > (~["\'"]) < Quotation >> 
+| < CHAR : < Quotation > (~["\'"])? < Quotation >> 
 }
 DefNode def():
 {
@@ -131,7 +133,7 @@ BlockNode start() :
 {
   (
     (
-      fnode = Func()
+      fnode = Func(null)
       {
         Context.functionMap.put(fnode.getFunctionId(), fnode);
       }
@@ -150,9 +152,14 @@ BlockNode start() :
   }
 }
 
-FunctionNode Func() :
+FunctionNode Func(FunctionNode ancestor) :
 {
-  FunctionNode myFunc,fnode = new FunctionNode();
+  FunctionNode myFunc,fnode = new FunctionNode(), par;
+  if(ancestor != null)
+  	par = ancestor;
+  else
+  	par = fnode;
+  fnode.setAncestor(par);
   Token t;
   ExpressionNode enode;
   AbstractTreeNode n;
@@ -185,11 +192,13 @@ FunctionNode Func() :
     fnode.setFunctionId(t.image);
   }
   < COLON >
-  (
-    myFunc = Func()
+  ( 
+        myFunc = Func(par)
+
     {
-      	myFunc.addFunction(myFunc);
+
 		fnode.addFunction(myFunc);
+		myFunc.setAncestor(par);
     } |  
   (
     n = Statement()

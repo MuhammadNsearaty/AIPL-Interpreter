@@ -3,9 +3,11 @@ package nodes;
 public class ReturnException extends Exception {
 
 	private static final long serialVersionUID = 110629117875938566L;
-
-	public ReturnException() {
+	public Object ret;
+	
+	public ReturnException(Object ret) {
 		super();
+		this.ret = ret;
 		// TODO Auto-generated constructor stub
 	}
 

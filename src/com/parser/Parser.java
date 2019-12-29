@@ -2,9 +2,18 @@
 package com.parser;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
+import java.util.TreeSet;
+
 import nodes.*;
 
 public class Parser implements ParserConstants {
+  public static void main(String args []) throws Exception {
+    BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
+    new Parser(stream);
+    AbstractTreeNode node = start();
+    node.execute(new Context());
+    //System.out.print(Context.functionMap.get("f").getMyFunctions().get("g").getMyFunctions().get("k").getAncestor().getFunctionId());
+  }
 
   static final public DefNode def() throws ParseException {
   DefNode ret = new DefNode();
@@ -28,7 +37,7 @@ public class Parser implements ParserConstants {
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case FUNCTION:
-        fnode = Func();
+        fnode = Func(null);
         Context.functionMap.put(fnode.getFunctionId(), fnode);
         break;
       case FLOOP:
@@ -67,8 +76,13 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public FunctionNode Func() throws ParseException {
-  FunctionNode myFunc,fnode = new FunctionNode();
+  static final public FunctionNode Func(FunctionNode ancestor) throws ParseException {
+  FunctionNode myFunc,fnode = new FunctionNode(), par;
+  if(ancestor != null)
+        par = ancestor;
+  else
+        par = fnode;
+  fnode.setAncestor(par);
   Token t;
   ExpressionNode enode;
   AbstractTreeNode n;
@@ -125,9 +139,9 @@ public class Parser implements ParserConstants {
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case FUNCTION:
-        myFunc = Func();
-        myFunc.addFunction(myFunc);
+        myFunc = Func(par);
                 fnode.addFunction(myFunc);
+                myFunc.setAncestor(par);
         break;
       case FLOOP:
       case WLOOP:
@@ -871,39 +885,6 @@ public class Parser implements ParserConstants {
     finally { jj_save(5, xla); }
   }
 
-  static private boolean jj_3_2() {
-    if (jj_scan_token(LP)) return true;
-    if (jj_3R_10()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_6() {
-    if (jj_3R_9()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_28() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_2()) {
-    jj_scanpos = xsp;
-    if (jj_3_3()) {
-    jj_scanpos = xsp;
-    if (jj_3_4()) {
-    jj_scanpos = xsp;
-    if (jj_3_5()) return true;
-    }
-    }
-    }
-    return false;
-  }
-
-  static private boolean jj_3R_27() {
-    if (jj_scan_token(MULTIPLY)) return true;
-    if (jj_3R_21()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_21() {
     if (jj_3R_26()) return true;
     Token xsp;
@@ -1020,6 +1001,11 @@ public class Parser implements ParserConstants {
     return false;
   }
 
+  static private boolean jj_3R_16() {
+    if (jj_3R_24()) return true;
+    return false;
+  }
+
   static private boolean jj_3R_35() {
     Token xsp;
     xsp = jj_scanpos;
@@ -1030,11 +1016,6 @@ public class Parser implements ParserConstants {
     if (jj_3R_38()) return true;
     }
     }
-    return false;
-  }
-
-  static private boolean jj_3R_16() {
-    if (jj_3R_24()) return true;
     return false;
   }
 
@@ -1153,6 +1134,39 @@ public class Parser implements ParserConstants {
     }
     }
     if (jj_3R_11()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_2() {
+    if (jj_scan_token(LP)) return true;
+    if (jj_3R_10()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_6() {
+    if (jj_3R_9()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_28() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_2()) {
+    jj_scanpos = xsp;
+    if (jj_3_3()) {
+    jj_scanpos = xsp;
+    if (jj_3_4()) {
+    jj_scanpos = xsp;
+    if (jj_3_5()) return true;
+    }
+    }
+    }
+    return false;
+  }
+
+  static private boolean jj_3R_27() {
+    if (jj_scan_token(MULTIPLY)) return true;
+    if (jj_3R_21()) return true;
     return false;
   }
 
@@ -1468,11 +1482,4 @@ public class Parser implements ParserConstants {
     JJCalls next;
   }
 
-/*  public static void main(String args []) throws Exception {
-    BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
-    new Parser(stream);
-    AbstractTreeNode node = start();
-    node.execute(new Context());
-  }
-  */
 }

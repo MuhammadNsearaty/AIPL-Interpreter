@@ -10,19 +10,22 @@ public class FunctionCallNode extends ExpressionNode {
 		super();
 		name = "Function Call Node";
 	}
-	
+	private HashMap<String ,FunctionNode> findPrivate() {
+		
+		for(int i = Context.privateFunctionMaps.size() - 1; i >= 0; i--)
+		{
+			HashMap<String ,FunctionNode> mp = Context.privateFunctionMaps.get(i);
+			if(mp.containsKey(operation)) {
+				return mp;
+			}
+		}
+		return null;
+	}
 	@Override
 	public Object execute(Context context) throws Exception {
-		HashMap<String, FunctionNode> workingMap = null;
-			for(int i = Context.privateFunctionMaps.size() - 1; i >= 0; i--)
-			{
-				HashMap<String ,FunctionNode> mp = Context.privateFunctionMaps.get(i);
-				if(mp.containsKey(operation)) {
-					workingMap = mp;
-					break;
-				}
-			}
-			if(workingMap == null)
+		HashMap<String, FunctionNode> workingMap = findPrivate();
+		boolean pr = workingMap == null;
+			if(pr)
 				if(!Context.functionMap.containsKey(operation))
 					throw new RunTimeException(operation + " is not defined");
 				else			
@@ -30,7 +33,7 @@ public class FunctionCallNode extends ExpressionNode {
 				
 		ArrayList<String> parIds = workingMap.get(operation).getParIds();
 		ArrayList<String> parTypes = workingMap.get(operation).getParTypes();
-		
+		FunctionNode fun = workingMap.get(operation);
 		if(parIds.size() != children.size())
 			throw new RunTimeException(operation +" takes " + parIds.size() + " parameters found " + children.size());
 		ArrayList<Object> pars = new ArrayList<>();
@@ -64,7 +67,6 @@ public class FunctionCallNode extends ExpressionNode {
 		if(!builder.toString().isEmpty())
 			throw new RunTimeException(builder.toString());
 
-		Object ret = null;
 		Context c = new Context();
 		for(int i = 0;i < parIds.size();i++) {
 			c.createVar(parIds.get(i), parTypes.get(i));
@@ -77,17 +79,21 @@ public class FunctionCallNode extends ExpressionNode {
 			else
 				c.findAndput(parIds.get(i), pars.get(i), "double");
 		}
-		try {
-			boolean b = workingMap == Context.functionMap;
-			Stack<HashMap<String, FunctionNode>> prv = Context.privateFunctionMaps;
-			if(b)
-				Context.privateFunctionMaps = new Stack<>();
-			workingMap.get(operation).execute(c);
-			if(b)
-				Context.privateFunctionMaps = prv;
-		} catch (ReturnException e) {
-			ret = AssignmentNode.rets.pop();
+		boolean b = false;
+		if(!Context.privateFunctionMaps.isEmpty()) {
+			if(workingMap == Context.functionMap) {
+				HashMap<String, FunctionNode> mp = Context.privateFunctionMaps.peek();
+				if(!mp.isEmpty())
+					if(mp.get(mp.keySet().iterator().next()) != fun.getAncestor())
+						b = true;
+			}
 		}
+		Stack<HashMap<String, FunctionNode>> prv = Context.privateFunctionMaps;
+		if(b)
+			Context.privateFunctionMaps = new Stack<>();
+		Object ret = workingMap.get(operation).execute(c);
+		if(b)
+			Context.privateFunctionMaps = prv;
 		return ret;
 	}
 
