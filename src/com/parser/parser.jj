@@ -337,7 +337,7 @@ ExpressionNode N() :
       conNode = new ConstantNode();
       conNode.setValue(t.image);
     }
-  | 
+  |
     < LP > node1 = E() < RP >
   )
   {
@@ -461,7 +461,11 @@ ConditionNode Condition() :
   ExpressionNode enode2 = null;
 }
 {
-(    LOOKAHEAD(3)
+(
+  LOOKAHEAD(3)
+  (
+    < LP > node1 = Or() < RP >
+  )|    LOOKAHEAD(3)
   (
   enode1 = E()
   (
@@ -473,8 +477,6 @@ ConditionNode Condition() :
   | t = < NEQ >
   )
   enode2 = E()
-  )|
-  (    < LP > node1 = Or() < RP >
   )| LOOKAHEAD(3)(
     (      enode1 = Strings()
 	| t = < VAR > { enode1 = new VariableNode(t.image);} 
