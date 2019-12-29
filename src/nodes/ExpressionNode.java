@@ -28,6 +28,8 @@ public class ExpressionNode extends AbstractTreeNode {
 			return d1/d2;
 		case "%":
 			return d1 % d2;
+		case "^":
+			return Math.pow(d1, d2);
 		default:
 			return 0;
 		}

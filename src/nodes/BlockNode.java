@@ -8,8 +8,10 @@ public class BlockNode extends AbstractTreeNode {
 
 	@Override
 	public Object execute(Context context) throws Exception {
+		context.startScope();
 		for (AbstractTreeNode n : children)
-			n.execute(context);	
+			n.execute(context);
+		context.endScope();
 		return null;
 	}
 

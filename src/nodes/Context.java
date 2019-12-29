@@ -2,11 +2,25 @@ package nodes;
 import java.util.*;
 public class Context implements Cloneable{
 	public static HashMap<String, FunctionNode> functionMap = new HashMap<>();
-	
-	private HashMap<String,Object> vars = new HashMap<String, Object>();
+	public static HashMap<String, FunctionNode> privateFunctionMap = new HashMap<>();
+	private HashMap<String,Object> vars = new HashMap<>();
+	private Stack<HashMap<String, Object>> stack = new Stack<>();
 	
 	public HashMap<String, Object> getVars() {
 		return vars;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void startScope() {
+		stack.push((HashMap<String, Object>) vars.clone());
+	}
+	
+	public void endScope() {
+		HashMap<String, Object> top = stack.pop();
+		for(String s : vars.keySet())
+			if(top.containsKey(s))
+				top.put(s, vars.get(s));
+		vars = top;
 	}
 	
 	public void findAndput(String varName, Object value, String type) throws RunTimeException {

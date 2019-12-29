@@ -15,77 +15,75 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int MULTIPLY = 6;
   /** RegularExpression Id. */
-  int MOD = 7;
+  int POWER = 7;
   /** RegularExpression Id. */
-  int POWER = 8;
+  int EQ = 8;
   /** RegularExpression Id. */
-  int EQ = 9;
+  int LT = 9;
   /** RegularExpression Id. */
-  int LT = 10;
+  int GT = 10;
   /** RegularExpression Id. */
-  int GT = 11;
+  int LET = 11;
   /** RegularExpression Id. */
-  int LET = 12;
+  int GET = 12;
   /** RegularExpression Id. */
-  int GET = 13;
+  int NEQ = 13;
   /** RegularExpression Id. */
-  int NEQ = 14;
+  int OR = 14;
   /** RegularExpression Id. */
-  int OR = 15;
+  int AND = 15;
   /** RegularExpression Id. */
-  int AND = 16;
+  int NOT = 16;
   /** RegularExpression Id. */
-  int NOT = 17;
+  int assignment = 17;
   /** RegularExpression Id. */
-  int assignment = 18;
+  int DIGIT = 18;
   /** RegularExpression Id. */
-  int DIGIT = 19;
+  int NUM = 19;
   /** RegularExpression Id. */
-  int NUM = 20;
+  int END = 20;
   /** RegularExpression Id. */
-  int END = 21;
+  int FLOOP = 21;
   /** RegularExpression Id. */
-  int FLOOP = 22;
+  int WLOOP = 22;
   /** RegularExpression Id. */
-  int WLOOP = 23;
+  int LP = 23;
   /** RegularExpression Id. */
-  int LP = 24;
+  int RP = 24;
   /** RegularExpression Id. */
-  int RP = 25;
+  int FUNCTION = 25;
   /** RegularExpression Id. */
-  int FUNCTION = 26;
+  int DEF = 26;
   /** RegularExpression Id. */
-  int DEF = 27;
+  int DATA = 27;
   /** RegularExpression Id. */
-  int DATA = 28;
+  int FLOATINGPOINT = 28;
   /** RegularExpression Id. */
-  int FLOATINGPOINT = 29;
+  int DOUBLE = 29;
   /** RegularExpression Id. */
-  int DOUBLE = 30;
+  int LETTER = 30;
   /** RegularExpression Id. */
-  int LETTER = 31;
+  int VAR = 31;
   /** RegularExpression Id. */
-  int VAR = 32;
+  int IF = 32;
   /** RegularExpression Id. */
-  int IF = 33;
+  int ELSE = 33;
   /** RegularExpression Id. */
-  int ELSE = 34;
+  int READ = 34;
   /** RegularExpression Id. */
-  int READ = 35;
+  int WRITE = 35;
   /** RegularExpression Id. */
-  int WRITE = 36;
+  int COLON = 36;
   /** RegularExpression Id. */
-  int COLON = 37;
+  int SIMICOLON = 37;
   /** RegularExpression Id. */
-  int SIMICOLON = 38;
+  int Quotation = 38;
   /** RegularExpression Id. */
-  int Quotation = 39;
+  int DQuotation = 39;
   /** RegularExpression Id. */
-  int DQuotation = 40;
+  int STRING = 40;
   /** RegularExpression Id. */
-  int STRING = 41;
-  /** RegularExpression Id. */
-  int CHAR = 42;
+  int CHAR = 41;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -99,7 +97,6 @@ public interface ParserConstants {
     "\"\\n\"",
     "<PLUS>",
     "<MULTIPLY>",
-    "\"%\"",
     "\"^\"",
     "\"=\"",
     "\"<\"",

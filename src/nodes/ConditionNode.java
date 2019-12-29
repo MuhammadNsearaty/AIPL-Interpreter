@@ -33,9 +33,9 @@ public class ConditionNode extends AbstractTreeNode {
 		case "<=":
 			return d1<=d2;
 		case"<>":
-			return Math.abs(d1 - d2) > 1e6;
+			return Math.abs(d1 - d2) > 1e-6;
 		case "=":
-			return Math.abs(d1 - d2) < 1e6;
+			return Math.abs(d1 - d2) < 1e-6;
 		default:
 			return false;
 		}

@@ -36,8 +36,8 @@ TOKEN : /* OPERATORS */
   | "-" >
 | < MULTIPLY :
     "*"
-  | "/" >
-| < MOD : "%" >
+  | "/"
+  |  "%" >
 | < POWER : "^" >
 | < EQ : "=" >
 | < LT : "<" >
@@ -151,7 +151,7 @@ BlockNode start() :
 
 FunctionNode Func() :
 {
-  FunctionNode fnode = new FunctionNode();
+  FunctionNode myFunc,fnode = new FunctionNode();
   Token t;
   ExpressionNode enode;
   AbstractTreeNode n;
@@ -185,11 +185,18 @@ FunctionNode Func() :
   }
   < COLON >
   (
+    myFunc = Func()
+    {
+      	myFunc.addFunction(myFunc);
+		fnode.addFunction(myFunc);
+    } |  
+  (
     n = Statement()
     {
       fnode.addChild(n);
     }
-  )*
+  )
+)*
   < END >
   {
     return fnode;
@@ -232,7 +239,7 @@ ExpressionNode E() :
   Token t = new Token();
 }
 {
-  node1 = M()
+  node1 = F()
   (
     t = < PLUS > node2 = E()
   )?
@@ -249,30 +256,6 @@ ExpressionNode E() :
   }
 }
 
-ExpressionNode M() :
-{
-  ExpressionNode mnode = new ExpressionNode();
-  ExpressionNode node1;
-  ExpressionNode node2 = null;
-  Token t = new Token();
-}
-{
-  node1 = F()
-  (
-    t = < MOD > node2 = M()
-  )?
-  {
-    mnode.setOperation(t.image);
-    mnode.addChild(node1);
-    if (node2 != null)
-    {
-      mnode.addChild(node2);
-      return mnode;
-    }
-    else 
-    return node1;
-  }
-}
 
 ExpressionNode F() :
 {

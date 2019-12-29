@@ -1,5 +1,7 @@
 package nodes;
 
+import java.util.Stack;
+
 public class AssignmentNode extends AbstractTreeNode {
 	
 	public AssignmentNode() {
@@ -7,7 +9,7 @@ public class AssignmentNode extends AbstractTreeNode {
 	}
 	private String varId;
 	private String operation;
-	
+	public static Stack<Object> rets = new Stack<>();
 	@Override
 	public void print(String prefix) {
 		System.out.println(prefix + name + " variable " + varId);
@@ -43,10 +45,11 @@ public class AssignmentNode extends AbstractTreeNode {
 			x = (double) children.get(0).execute(context);
 		return x;
 	}
+	
 	@Override
 	public Object execute(Context context) throws Exception {
 		if(varId.equals("ret")) {
-			context.getVars().put("ret", children.get(0).execute(context));
+			rets.push(children.get(0).execute(context));
 			throw new ReturnException();
 		}
 		if(context.getVars().containsKey(varId)) {

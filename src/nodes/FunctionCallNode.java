@@ -1,6 +1,7 @@
 package nodes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class FunctionCallNode extends ExpressionNode {
@@ -8,14 +9,21 @@ public class FunctionCallNode extends ExpressionNode {
 		super();
 		name = "Function Call Node";
 	}
-
+	
 	@Override
 	public Object execute(Context context) throws Exception {
-		if(!Context.functionMap.containsKey(operation))
-			throw new RunTimeException(operation + "is not defined");
+		HashMap<String, FunctionNode> workingMap;
+		if(!Context.functionMap.containsKey(operation)) {
+			if(!Context.privateFunctionMap.containsKey(operation))
+				throw new RunTimeException(operation + " is not defined");
+			else
+				workingMap = Context.privateFunctionMap;
+		}
+		else
+			workingMap = Context.functionMap;
 		
-		ArrayList<String> parIds = Context.functionMap.get(operation).getParIds();
-		ArrayList<String> parTypes = Context.functionMap.get(operation).getParTypes();
+		ArrayList<String> parIds = workingMap.get(operation).getParIds();
+		ArrayList<String> parTypes = workingMap.get(operation).getParTypes();
 		
 		if(parIds.size() != children.size())
 			throw new RunTimeException(operation +" takes " + parIds.size() + " parameters found " + children.size());
@@ -64,10 +72,10 @@ public class FunctionCallNode extends ExpressionNode {
 				c.findAndput(parIds.get(i), pars.get(i), "double");
 		}
 		try {
-			Context.functionMap.get(operation).execute(c);
+			workingMap.get(operation).execute(c);
 		} catch (ReturnException e) {
-			ret = c.getVars().get("ret");
-		}		
+			ret = AssignmentNode.rets.pop();
+		}
 		return ret;
 	}
 
