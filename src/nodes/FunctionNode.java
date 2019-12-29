@@ -53,11 +53,11 @@ public class FunctionNode extends BlockNode {
 	}
 	@Override
 	public Object execute(Context context) throws Exception {
-		HashMap<String, FunctionNode> prv = Context.privateFunctionMap;
-		Context.privateFunctionMap = myFunctions;
+		if(!Context.privateFunctionMaps.contains(myFunctions))
+			Context.privateFunctionMaps.push(myFunctions);
 		for (AbstractTreeNode n : children)
 			n.execute(context);
-		Context.privateFunctionMap = prv;
+		Context.privateFunctionMaps.pop();
 		return null;
 	}
 

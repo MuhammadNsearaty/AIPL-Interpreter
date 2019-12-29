@@ -11,12 +11,13 @@ import nodes.*;
 
 public class Parser
 {
-  public static void main(String args []) throws Exception {
+/*  public static void main(String args []) throws Exception {
     BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
     new Parser(stream);
     AbstractTreeNode node = start();
     node.execute(new Context());
   }
+  */
 }
 
 PARSER_END(Parser)

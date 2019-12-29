@@ -5,12 +5,6 @@ import java.io.BufferedInputStream;
 import nodes.*;
 
 public class Parser implements ParserConstants {
-  public static void main(String args []) throws Exception {
-    BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
-    new Parser(stream);
-    AbstractTreeNode node = start();
-    node.execute(new Context());
-  }
 
   static final public DefNode def() throws ParseException {
   DefNode ret = new DefNode();
@@ -1474,4 +1468,11 @@ public class Parser implements ParserConstants {
     JJCalls next;
   }
 
+/*  public static void main(String args []) throws Exception {
+    BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
+    new Parser(stream);
+    AbstractTreeNode node = start();
+    node.execute(new Context());
+  }
+  */
 }

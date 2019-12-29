@@ -2,7 +2,7 @@ package nodes;
 import java.util.*;
 public class Context implements Cloneable{
 	public static HashMap<String, FunctionNode> functionMap = new HashMap<>();
-	public static HashMap<String, FunctionNode> privateFunctionMap = new HashMap<>();
+	public static Stack<HashMap<String, FunctionNode>> privateFunctionMaps = new Stack<>();
 	private HashMap<String,Object> vars = new HashMap<>();
 	private Stack<HashMap<String, Object>> stack = new Stack<>();
 	

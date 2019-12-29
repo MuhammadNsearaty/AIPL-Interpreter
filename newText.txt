@@ -7,7 +7,7 @@ func (int x, int y, double z, string s, char c) -> fun:
 !
 func(int x)->f:
 	?(x = 1)
-		->"ababa";
+		->"ababa1";
 		def ret : int;
 		ret := 0;
 	!
@@ -15,13 +15,20 @@ func(int x)->f:
 		?(y = 0)
 			ret := 12;
 		!
+		func()->k:
+			->g(0);
+		!
+		k();
 		x := g(0);
 		->f(1);
 		ret := x;
 	!
+	ret := g(1);
 !
 x := 1;
 y := 0;
-?((x > y) | (2 + 3 < 7))
+?((x < y) | ((2 + 3 < 7) $ y = 0))
  	->"ababa";
  !
+ 
+->f(x + 1);
