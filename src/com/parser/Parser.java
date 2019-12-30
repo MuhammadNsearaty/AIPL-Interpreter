@@ -10,7 +10,8 @@ public class Parser implements ParserConstants {
     BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
     new Parser(stream);
     AbstractTreeNode node = start();
-    node.execute(new Context());
+    //node.execute(new Context());
+        System.out.println(node.convert(new Context()));
   }
 
   static final public DefNode def() throws ParseException {

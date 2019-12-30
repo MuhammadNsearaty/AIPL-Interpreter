@@ -13,7 +13,7 @@ public class StringNode extends ExpressionNode{
 		return s;
 	}
 	public Object convert(Context context){
-		return s;
+		return "\"" + s + "\"";
 	}
 	
 }

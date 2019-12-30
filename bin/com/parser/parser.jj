@@ -16,7 +16,8 @@ public class Parser
     BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
     new Parser(stream);
     AbstractTreeNode node = start();
-    node.execute(new Context());
+    //node.execute(new Context());
+	System.out.println(node.convert(new Context()));
   }
   
 }
@@ -193,7 +194,6 @@ FunctionNode Func(FunctionNode ancestor) :
   < COLON >
   ( 
         myFunc = Func(par)
-
     {
 
 		fnode.addFunction(myFunc);

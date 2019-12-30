@@ -18,7 +18,7 @@ public class CharNode extends ExpressionNode {
 	}
 	
 	public Object convert(Context context) {
-		return c +"";
+		return "\'" + c +"\'";
 	}
 
 }

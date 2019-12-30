@@ -32,17 +32,20 @@ public class testFX extends Application{
 		System.setIn(in);
 		//System.setErr(out);
 		
+		
 				
 		Thread thread[] = new Thread[2] ;
-		thread[1] = new Thread(new Runnable() {
+		thread[0] = new Thread();
+		if(thread[0].isAlive()) {
+			item.button.setDisable(true);
+			item.button0.setDisable(false);
+		}
+		else
+		{
+			item.button.setDisable(false);
+			item.button0.setDisable(true);
+		}
 
-			@Override
-			public void run() {
-				System.out.flush();
-				System.setOut(old);
-			}
-	
-		});
 		item.button.setOnAction(e ->{ // Run Button
 			thread[0] = new Thread(new Runnable() {
 				
@@ -71,7 +74,13 @@ public class testFX extends Application{
 			thread[0].start();
 		});
 		item.button0.setOnAction(e ->{
-			
+			if(thread[0].isAlive())
+				try {
+					thread[0].join();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		}); //Stop Button
 		StackPane pane = new StackPane(item);
 		Scene scene = new Scene(pane);

@@ -17,9 +17,9 @@ public class IfNode extends AbstractTreeNode {
 
 	@Override
 	public Object convert(Context context) {
-		return "if(" + children.get(0).convert(context) + "){"
+		return "if(" + children.get(0).convert(context) + "){\n"
 				+ children.get(1).convert(context) + 
-				"}" + (children.size() > 2? children.get(2).convert(context) :"" );
+				"}\n" + (children.size() > 2? children.get(2).convert(context) :"" );
 	}
 
 }
