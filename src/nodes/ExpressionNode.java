@@ -44,7 +44,7 @@ public class ExpressionNode extends AbstractTreeNode {
 				int d1 = (int) b1;
 				if(b2 instanceof Integer) {
 					int d2 = (int) b2;
-					return calc(d1, d2);
+					return (int)calc(d1, d2);
 				}
 				else {
 					double d2 = (double) b2;
