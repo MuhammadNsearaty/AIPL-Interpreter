@@ -2,7 +2,6 @@
 package com.parser;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
-import java.util.TreeSet;
 
 import nodes.*;
 
@@ -12,7 +11,6 @@ public class Parser implements ParserConstants {
     new Parser(stream);
     AbstractTreeNode node = start();
     node.execute(new Context());
-    //System.out.print(Context.functionMap.get("f").getMyFunctions().get("g").getMyFunctions().get("k").getAncestor().getFunctionId());
   }
 
   static final public DefNode def() throws ParseException {
@@ -1019,13 +1017,13 @@ public class Parser implements ParserConstants {
     return false;
   }
 
-  static private boolean jj_3R_15() {
-    if (jj_scan_token(VAR)) return true;
+  static private boolean jj_3R_23() {
+    if (jj_scan_token(STRING)) return true;
     return false;
   }
 
-  static private boolean jj_3R_23() {
-    if (jj_scan_token(STRING)) return true;
+  static private boolean jj_3R_15() {
+    if (jj_scan_token(VAR)) return true;
     return false;
   }
 

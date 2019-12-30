@@ -2,7 +2,6 @@
 package com.parser;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
-import java.util.TreeSet;
 import nodes.*;
 
 /** Token Manager. */

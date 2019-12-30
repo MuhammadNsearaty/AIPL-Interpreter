@@ -2,6 +2,7 @@ package nodes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Stack;
 
 
@@ -12,8 +13,7 @@ public class FunctionCallNode extends ExpressionNode {
 	}
 	private HashMap<String ,FunctionNode> findPrivate() {
 		
-		for(int i = Context.privateFunctionMaps.size() - 1; i >= 0; i--)
-		{
+		for(int i = Context.privateFunctionMaps.size() - 1; i >= 0; i--){
 			HashMap<String ,FunctionNode> mp = Context.privateFunctionMaps.get(i);
 			if(mp.containsKey(operation)) {
 				return mp;
@@ -74,23 +74,23 @@ public class FunctionCallNode extends ExpressionNode {
 				c.put(parIds.get(i), pars.get(i).toString());
 				continue;
 			}
-			if(!parTypes.get(i).equals("int"))
+			//if(!parTypes.get(i).equals("int"))
 				c.findAndput(parIds.get(i), pars.get(i), parTypes.get(i));
-			else
-				c.findAndput(parIds.get(i), pars.get(i), "double");
+			//else
+				//c.findAndput(parIds.get(i), pars.get(i), "double");
 		}
 		boolean b = false;
 		if(!Context.privateFunctionMaps.isEmpty()) {
 			if(workingMap == Context.functionMap) {
-				HashMap<String, FunctionNode> mp = Context.privateFunctionMaps.peek();
+				HashMap<String, FunctionNode> mp = Context.privateFunctionMaps.getLast();
 				if(!mp.isEmpty())
 					if(mp.get(mp.keySet().iterator().next()) != fun.getAncestor())
 						b = true;
 			}
 		}
-		Stack<HashMap<String, FunctionNode>> prv = Context.privateFunctionMaps;
+		LinkedList<HashMap<String, FunctionNode>> prv = Context.privateFunctionMaps;
 		if(b)
-			Context.privateFunctionMaps = new Stack<>();
+			Context.privateFunctionMaps = new LinkedList<>();
 		Object ret = workingMap.get(operation).execute(c);
 		if(b)
 			Context.privateFunctionMaps = prv;

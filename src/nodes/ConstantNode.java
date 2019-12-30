@@ -2,7 +2,7 @@ package nodes;
 
 public class ConstantNode extends ExpressionNode {
 
-	private double value;
+	private Object value;
 		
 	
 	public ConstantNode() {
@@ -25,12 +25,16 @@ public class ConstantNode extends ExpressionNode {
 		this.value = value;
 	}
 
-	public double getValue() {
+	public Object getValue() {
 		return value;
 	}
 
 	public void setValue(String image) {
-		this.value = Double.parseDouble(image);
+		try {
+			this.value = Integer.parseInt(image);
+		}catch(NumberFormatException e) {
+			this.value = Double.parseDouble(image);
+		}
 	}
 
 	@Override

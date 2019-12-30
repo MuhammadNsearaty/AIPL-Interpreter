@@ -94,7 +94,7 @@ public class AssignmentNode extends AbstractTreeNode {
 		}
 		else {
 			if(!operation.equals(":="))
-				System.out.println(varId + " dose not exist ignoring operation");
+				System.err.println(varId + " dose not exist ignoring operation");
 			context.put(varId, (String) children.get(0).execute(context).toString());	
 		}
 		return null;
