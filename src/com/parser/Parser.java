@@ -10,8 +10,8 @@ public class Parser implements ParserConstants {
     BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
     new Parser(stream);
     AbstractTreeNode node = start();
-    //node.execute(new Context());
-        System.out.println(node.convert(new Context()));
+    node.execute(new Context());
+        //System.out.println(node.convert(new Context()));
   }
 
   static final public DefNode def() throws ParseException {
@@ -936,13 +936,13 @@ public class Parser implements ParserConstants {
     return false;
   }
 
-  static private boolean jj_3R_19() {
-    if (jj_scan_token(VAR)) return true;
+  static private boolean jj_3R_31() {
+    if (jj_scan_token(DOUBLE)) return true;
     return false;
   }
 
-  static private boolean jj_3R_31() {
-    if (jj_scan_token(DOUBLE)) return true;
+  static private boolean jj_3R_19() {
+    if (jj_scan_token(VAR)) return true;
     return false;
   }
 
@@ -1000,11 +1000,6 @@ public class Parser implements ParserConstants {
     return false;
   }
 
-  static private boolean jj_3R_16() {
-    if (jj_3R_24()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_35() {
     Token xsp;
     xsp = jj_scanpos;
@@ -1018,13 +1013,18 @@ public class Parser implements ParserConstants {
     return false;
   }
 
-  static private boolean jj_3R_23() {
-    if (jj_scan_token(STRING)) return true;
+  static private boolean jj_3R_16() {
+    if (jj_3R_24()) return true;
     return false;
   }
 
   static private boolean jj_3R_15() {
     if (jj_scan_token(VAR)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_23() {
+    if (jj_scan_token(STRING)) return true;
     return false;
   }
 

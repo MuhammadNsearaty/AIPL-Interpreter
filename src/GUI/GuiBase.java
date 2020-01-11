@@ -241,7 +241,7 @@ public class GuiBase extends VBox {
         button0.setMnemonicParsing(false);
         button0.setPrefHeight(60.0);
         button0.setPrefWidth(98.0);
-        button0.setText("Stop");
+        button0.setText("Compile");
         button0.setFont(new Font(19.0));
 
        /* AnchorPane.setBottomAnchor(textArea, 0.0);

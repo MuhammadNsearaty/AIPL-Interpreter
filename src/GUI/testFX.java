@@ -36,16 +36,6 @@ public class testFX extends Application{
 				
 		Thread thread[] = new Thread[2] ;
 		thread[0] = new Thread();
-		if(thread[0].isAlive()) {
-			item.button.setDisable(true);
-			item.button0.setDisable(false);
-		}
-		else
-		{
-			item.button.setDisable(false);
-			item.button0.setDisable(true);
-		}
-
 		item.button.setOnAction(e ->{ // Run Button
 			thread[0] = new Thread(new Runnable() {
 				
@@ -74,13 +64,23 @@ public class testFX extends Application{
 			thread[0].start();
 		});
 		item.button0.setOnAction(e ->{
-			if(thread[0].isAlive())
-				try {
-					thread[0].join();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			InputStream is = new ByteArrayInputStream( item.getText().getBytes());
+			try {
+				if (is.available() != 0) {
+					item.textArea0.clear();
+					Parser.ReInit(is);
+					AbstractTreeNode node;
+					try {
+						node = Parser.start();
+						System.out.print(node.convert(new Context()));
+					} 
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				}
+			}catch(IOException e1) {
+				e1.printStackTrace();
+			}
 		}); //Stop Button
 		StackPane pane = new StackPane(item);
 		Scene scene = new Scene(pane);

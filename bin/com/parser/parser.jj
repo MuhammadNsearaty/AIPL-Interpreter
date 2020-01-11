@@ -16,8 +16,8 @@ public class Parser
     BufferedInputStream stream = new BufferedInputStream(new FileInputStream("newText.txt"));
     new Parser(stream);
     AbstractTreeNode node = start();
-    //node.execute(new Context());
-	System.out.println(node.convert(new Context()));
+    node.execute(new Context());
+	//System.out.println(node.convert(new Context()));
   }
   
 }
@@ -447,7 +447,6 @@ ConditionNode Not() :
 {
   (
 	t = < NOT >
-
   )?
   cnode1  = Condition()
    	

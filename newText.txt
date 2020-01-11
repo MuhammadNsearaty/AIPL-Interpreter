@@ -8,6 +8,7 @@ func (int x, int y, double z, string s, char c) -> fun:
 func()->a:
 	->f(1);
 !
+
 func(int x)->f:
 	?(x = 1)
 		ret := 3;
@@ -15,6 +16,7 @@ func(int x)->f:
 	func(int y)->g:
 		func()->k:
 			->g(2);
+			a();
 		!
 		?(y = 2)
 			ret := 1.0;
@@ -24,9 +26,12 @@ func(int x)->f:
 			ret := 2;
 		!
 		->g(0);
-		a();
+		k();
 	!
 	g(1);
+!
+func()->sum:
+	ret := 2;
 !
 x := 1;
 f(x + 1);
