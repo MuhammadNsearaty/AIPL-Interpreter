@@ -300,7 +300,7 @@ public class GuiBase extends VBox {
         menuBar.getMenus().add(menu2);
         getChildren().add(menuBar);
         anchorPane.getChildren().add(label);
-        splitPane.getItems().add(anchorPane);
+        //splitPane.getItems().add(anchorPane);
         anchorPane0.getChildren().add(label0);
         hBox.getChildren().add(button);
         hBox.getChildren().add(button0);

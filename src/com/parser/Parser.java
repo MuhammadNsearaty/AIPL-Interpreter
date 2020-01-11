@@ -802,42 +802,52 @@ public class Parser implements ParserConstants {
 
   static final public AbstractTreeNode Statement() throws ParseException {
   AbstractTreeNode n = null;
-    if (jj_2_6(2)) {
-      n = CAllFUNCTION();
-      jj_consume_token(SIMICOLON);
-    } else {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case VAR:
-        n = Assignment();
+    try {
+      if (jj_2_6(2)) {
+        n = CAllFUNCTION();
         jj_consume_token(SIMICOLON);
-        break;
-      case IF:
-        n = IF();
-        break;
-      case WLOOP:
-        n = While();
-        break;
-      case READ:
-        n = Read();
-        jj_consume_token(SIMICOLON);
-        break;
-      case WRITE:
-        n = Write();
-        jj_consume_token(SIMICOLON);
-        break;
-      case FLOOP:
-        n = For();
-        break;
-      case DEF:
-        n = def();
-        jj_consume_token(SIMICOLON);
-        break;
-      default:
-        jj_la1[32] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
+      } else {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case VAR:
+          n = Assignment();
+          jj_consume_token(SIMICOLON);
+          break;
+        case IF:
+          n = IF();
+          break;
+        case WLOOP:
+          n = While();
+          break;
+        case READ:
+          n = Read();
+          jj_consume_token(SIMICOLON);
+          break;
+        case WRITE:
+          n = Write();
+          jj_consume_token(SIMICOLON);
+          break;
+        case FLOOP:
+          n = For();
+          break;
+        case DEF:
+          n = def();
+          jj_consume_token(SIMICOLON);
+          break;
+        default:
+          jj_la1[32] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
       }
+    } catch (ParseException e) {
+                System.out.println(e);
+                Token t;
+                do {
+                  t = getNextToken();
+                }while(t.kind!=SIMICOLON);
     }
+    if(n == null)
+        n = new BlockNode();
     {if (true) return n;}
     throw new Error("Missing return statement in function");
   }
@@ -1136,14 +1146,14 @@ public class Parser implements ParserConstants {
     return false;
   }
 
-  static private boolean jj_3_2() {
-    if (jj_scan_token(LP)) return true;
-    if (jj_3R_10()) return true;
+  static private boolean jj_3_6() {
+    if (jj_3R_9()) return true;
     return false;
   }
 
-  static private boolean jj_3_6() {
-    if (jj_3R_9()) return true;
+  static private boolean jj_3_2() {
+    if (jj_scan_token(LP)) return true;
+    if (jj_3R_10()) return true;
     return false;
   }
 

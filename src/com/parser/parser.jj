@@ -654,6 +654,7 @@ AbstractTreeNode Statement() :
   AbstractTreeNode n = null;
 }
 {
+  try { 
   (
     LOOKAHEAD(2)
     n = CAllFUNCTION() < SIMICOLON >
@@ -667,7 +668,17 @@ AbstractTreeNode Statement() :
   | n = For()
   | n = def() < SIMICOLON >
   )
+	}
+	catch(ParseException e) {
+		System.out.println(e);
+		Token t;
+		do {
+		  t = getNextToken();
+		}while(t.kind!=SIMICOLON);
+	}
   {
+    if(n == null)
+    	n = new BlockNode();
     return n;
   }
 }
